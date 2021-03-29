@@ -6,6 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "server": "nodemon server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION_FALSE=false npm install"
   },
   "keywords": [],
   "author": "",
