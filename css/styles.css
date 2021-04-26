@@ -1,6 +1,6 @@
 .arjs-loader {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     position: absolute;
     top: 0;
     left: 0;
@@ -13,6 +13,6 @@
 
   .arjs-loader div {
     text-align: center;
-    font-size: 1.25em;
+    font-size: 1.5em;
     color: white;
   }
