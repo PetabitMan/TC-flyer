@@ -22,6 +22,8 @@
 
 
     <a-assets>
+
+
     <img id="my-image" src="slides/Slide_1.jpg">
   </a-assets>
     <!-- a-nft is the anchor that defines an Image Tracking entity -->
@@ -55,8 +57,9 @@
 
     <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005" smooth=" true" smoothCount="10"
       smoothTolerance=".01" smoothThreshold="5">
-      <a-entity>
-        <a-image width="10" height="5" src="#my-image"></a-image>
+      <a-entity scale="5 5 5" position="0 0 0" size="5 5 5">
+          <a-cylinder position=" 10 0 1"></a-cylinder>
+        <a-image position="0 0 1" width="10" height="5" src="#my-image"></a-image>
       </a-entity>
     </a-nft>
 
