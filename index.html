@@ -57,8 +57,12 @@
 
     <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005" smooth=" true" smoothCount="10"
       smoothTolerance=".01" smoothThreshold="5">
-          <a-cylinder position=" 10 0 1" height="30" radius="15"></a-cylinder>
-        <a-image position="0 0 1" width="100" height="50" src="#my-image"></a-image>
+      <a-entity>
+        <a-cylinder position=" 10 0 1" height="30" radius="15"></a-cylinder>
+      <a-image position="0 0 1" width="100" height="50" src="#my-image"></a-image>
+      <a-cylinder position=" -10 0 1" height="30" radius="15"></a-cylinder>
+      </a-entity>
+
 
     </a-nft>
 
@@ -95,7 +99,7 @@
 
     <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023" smooth=" true" smoothCount="10"
       smoothTolerance=".01" smoothThreshold="5">
-      <a-sphere color="mediumseagreen"></a-sphere>
+      <a-sphere position="0 0 5" scale="50 50 50" color="mediumseagreen"></a-sphere>
     </a-nft>
 
     <a-entity camera></a-entity>
