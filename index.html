@@ -1,142 +1,217 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
 
-<head>
+    <script>
+      AFRAME.registerComponent("change-color-on-hover", {
+        schema: {
+          color: { default: "blue" }
+        },
 
-  <script
-    src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+        init: function() {
+          let data = this.data;
+          let images = ["#my-image", "my-image4", "#my-image2", "my-image3"];
+          let change = 1;
+          let currentImage = 0;
+          if (this.data.color === "red") {
+            change = -1;
+          }
+          let el = this.el;
+          let defaultColor = el.getAttribute("material").color;
 
-  <style>
-  .arjs-loader {
-      height: 100vh;
-      width: 100vw;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: rgba(0, 0, 0, 0.8);
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: "black"
-    }
+          el.addEventListener("mouseenter", function() {
+            el.setAttribute("color", data.color);
+            setTimeout(() => {document
+              .getElementById("testing-image")
+              .setAttribute("src", "#my-image")
+            currentImage += change}, 500)
 
-    .arjs-loader div {
-      text-align: center;
-      font-size: 1.5em;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+          });
 
-  </style>
-</head>
+          el.addEventListener("mouseleave", function() {
+            el.setAttribute("color", defaultColor);
+          });
+        }
+      });
+    </script>
 
-<body style="margin : 0px; overflow: hidden;">
-  <!-- minimal loader shown until image descriptors are loaded. Loading may take a while according to the device computational power -->
-  <div class="arjs-loader">
-    <div>
-<p>Es Lädt bitte warten</p>
+    <style>
+      .arjs-loader {
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: "black";
+      }
+
+      .arjs-loader div {
+        text-align: center;
+        font-size: 2em;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <div class="arjs-loader">
+      <div>
+        <p>Es Lädt bitte warten</p>
+      </div>
     </div>
-  </div>
 
-  <!-- a-frame scene -->
-  <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
-    arjs='trackingMethod: best; sourceType: webcam; debugUIEnabled: false;'>
+    <!-- a-frame scene -->
+    <a-scene
+      vr-mode-ui="enabled: false;"
+      renderer="logarithmicDepthBuffer: true;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
+    >
+      <a-assets>
+        <img
+          id="my-image"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fmery.jpg?v=1619597239473"
+        />
+        <img
+          id="my-image2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fme.jpg?v=1619597297120"
+        />
+        <img
+          id="my-image3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_1.jpg?v=1619598198727"
+        />
+        <img
+          id="my-image4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588"
+        />
+      </a-assets>
 
+      <a-nft
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/PetabitMan/TC-flyer/master/tracker/vier/vier"
+      >
+        <a-entity
+          gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+          scale="3 3 3"
+          position="0 100 -150"
+          rotation="90 90 0"
+        >
+          <a-box position="10 10 10" color="red" size="10 10 10"> </a-box>
+        </a-entity>
+      </a-nft>
 
-    <a-assets>
+      <a-nft
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+      >
+        <a-entity scale="1 1 1" position="50 150 -200">
+          <a-cylinder height="100" radius="40"></a-cylinder>
+        </a-entity>
+      </a-nft>
 
+      <a-nft
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+      >
+        <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
+          <a-image width="120" height="60" src="#my-image2"></a-image>
+        </a-entity>
+      </a-nft>
 
-    <img id="my-image" src="public/assets/slides/Slide_1.jpg">
-    <img id="my-image2" src="https://tc-flyer.herokuapp.com/public/assets/slides/Slide_2.jpg">
-    <img id="my-image3" src="https://raw.githack.com/PetabitMan/TC-flyer/master/public/assets/slides/Slide_3.jpg">
+      <a-nft
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
+        smooth="true"
+        smoothCount="50"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+      >
+        <a-entity scale="1.2 1.2 1.2" position="5 150 -150" rotation="-90 0 0">
+          <a-entity position="-50 0 0">
+            <a-cylinder
+              color="white"
+              height="40"
+              radius="5"
+              change-color-on-hover="color: red"
+            ></a-cylinder>
+          </a-entity>
+          <a-image
+            id="testing-image"
+            width="80"
+            height="40"
+            src="#my-image3"
+          ></a-image>
+          <a-entity position="50 0 0">
+            <a-cylinder
+              color="white"
+              height="40"
+              radius="5"
+              change-color-on-hover="color: green"
+            ></a-cylinder>
+          </a-entity>
+        </a-entity>
+      </a-nft>
 
-  </a-assets>
-    <!-- a-nft is the anchor that defines an Image Tracking entity -->
-    <!-- on 'url' use the path to the Image Descriptors created before. -->
-    <!-- the path should end with the name without the extension e.g. if file is 'pinball.fset' the path should end with 'pinball' -->
-    <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/allinreality/ARjs_ImageMarker/master/SampleARMarker1" smooth=" true" smoothCount="10"
-      smoothTolerance=".01" smoothThreshold="5">
-      <a-entity scale="50 50 50" position="50 150 0" rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
-        <a-sphere color="mediumseagreen"></a-sphere>
-</a-entity>
-    </a-nft>
+      <a-nft
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+      >
+        <a-entity scale="1 1 1" position="50 150 -100" rotation="-90 0 0">
+          <a-image width="300" height="150" src="#my-image4"></a-image>
+          <a-box color="#EF2D5E" position="150 0 0" size="50 50 50"></a-box>
+        </a-entity>
+      </a-nft>
 
+      <a-nft
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
+        smooth="true"
+        smoothCount="1"
+        smoothTolerance=".01"
+        smoothThreshold="1"
+      >
+        <a-entity scale="1 1 1" position="50 150 -100" rotation="-90 0 0">
+          <a-image width="200" height="100" src="#my-image"></a-image>
+          <a-box
+            color="#EF2D5E"
+            position="200 0 0"
+            size="100 100 100"
+            change-color-on-hover="color: blue"
+          ></a-box>
+        </a-entity>
+      </a-nft>
 
-
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/trex-image/trex"
-      smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
-          <a-sphere color="mediumseagreen"></a-sphere>
-    </a-nft>
-
-
-
-    <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/PetabitMan/TC-flyer/master/tracker/vier/vier">
-      <a-entity gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-        scale="3 3 3" position="0 0 -50">
-            <a-box  position="10 10 10" color="red" size"10 10 10"></a-box>
+      <a-entity camera>
+        <a-entity
+          cursor="fuse: true; fuseTimeout: 1000"
+          position="0 0 -1"
+          geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015"
+          material="color: grey; shader: flat"
+        >
+        </a-entity>
       </a-entity>
-    </a-nft>
-
-
-
-    <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005" smooth=" true" smoothCount="10"
-      smoothTolerance=".01" smoothThreshold="5">
-      <a-entity scale="1 1 1" position="50 150 -200">
-        <a-cylinder radius="15"></a-cylinder>
-      <a-plane width="200" height="100" src="#my-image"></a-plane>
-      <a-cylinder  height="30" radius="15"></a-cylinder>
-      </a-entity>
-
-
-    </a-nft>
-
-
-
-    <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010" smooth=" true" smoothCount="10"
-      smoothTolerance=".01" smoothThreshold="5">
-      <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
-        <a-image width="500" height="250" src="https://i.stack.imgur.com/3R7hW.png"></a-image>
-        <a-box  position="10 10 10" color="red" size"10 10 10"></a-box>
-</a-entity>
-    </a-nft>
-
-
-
-    <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013" smooth=" true" smoothCount="10"
-      smoothTolerance=".01" smoothThreshold="5">
-      <a-entity scale="1 1 1" position="50 150 -200" rotation="90 0 0">
-        <a-box  position="10 10 10" color="red" size"10 10 10"></a-box>
-        <a-plane width="100" height="200" src="https://tc-flyer.herokuapp.com/https://raw.githack.com/PetabitMan/TC-flyer/master/public/assets/slides/Slide_3.jpg"></a-plane>
-</a-entity>
-    </a-nft>
-
-
-
-    <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018" smooth=" true" smoothCount="10"
-      smoothTolerance=".01" smoothThreshold="5">
-      <a-entity scale="1 1 1" position="50 150 -100" rotation="-90 0 0">
-        <a-plane width="600" height="300" color="red"></a-plane>
-        <a-box  position="10 10 10" color="red" size"10 10 10"></a-box>
-</a-entity>
-    </a-nft>
-
-
-
-    <a-nft type="nft" url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023" smooth=" true" smoothCount="10"
-      smoothTolerance=".01" smoothThreshold="5">
-      <a-entity scale="1 1 1" position="50 150 -100" rotation="90 0 0">
-        <a-box  position="10 10 10" color="red" size"10 10 10"></a-box>
-        <a-image width="400" height="200" src="https://raw.githack.com/PetabitMan/TC-flyer/master/public/assets/slides/Slide_3.jpg"></a-image>
-</a-entity>
-    </a-nft>
-
-    <a-entity camera></a-entity>
-  </a-scene>
-</body>
-
+    </a-scene>
+  </body>
 </html>
