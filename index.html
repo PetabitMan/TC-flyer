@@ -4,6 +4,7 @@
 <head>
   <script
     src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v5.0.1/dist/aframe-extras.min.js"></script>
   <script>
@@ -202,13 +203,13 @@
         rotationFactor: { default: 5 },
         minScale: { default: 0.3 },
         maxScale: { default: 8 },
-        positionFactor: { default: 10 },
-        enablePosition: { default: false }
+        positionFactor: { default: 10 }
       },
 
       init: function () {
         this.handleScale = this.handleScale.bind(this);
         this.handleRotation = this.handleRotation.bind(this);
+        this.handlePosition = this.handlePosition.bind(this);
 
         this.isVisible = false;
         this.initialScale = this.el.object3D.scale.clone();
@@ -231,7 +232,7 @@
           );
           this.el.sceneEl.addEventListener(
             "onefingermove",
-            this.handlePosistion
+            this.handlePosition
           );
           this.el.sceneEl.addEventListener("twofingermove", this.handleScale);
         } else {
@@ -241,7 +242,7 @@
           );
           this.el.sceneEl.removeEventListener(
             "onefingermove",
-            this.handlePosistion
+            this.handlePosition
           );
           this.el.sceneEl.removeEventListener(
             "twofingermove",
@@ -257,7 +258,7 @@
         );
         this.el.sceneEl.removeEventListener(
           "onefingermove",
-          this.handlePosistion
+          this.handlePosition
         );
         this.el.sceneEl.removeEventListener(
           "twofingermove",
@@ -272,8 +273,8 @@
             event.detail.positionChange.y * this.data.rotationFactor;
         }
       },
-      handlePosistion: function (event) {
-        if (this.isVisible && this.enablePosition) {
+      handlePosition: function (event) {
+        if (false) {
           this.el.object3D.position.y +=
             event.detail.positionChange.y * this.data.positionFactor;
           this.el.object3D.position.x +=
@@ -297,9 +298,61 @@
         }
       }
     });
-  </script>
 
-  <script>
+    AFRAME.registerComponent("gesture-images", {
+      schema: {
+        enabled: { default: true },
+        images: {
+          default: ["#my-image", "my-image2", "#my-image3", "my-image4"]
+        },
+        widthDim: { default: 115 },
+        heightDim: { default: 180 },
+        markerId: { default: "yo" }
+      },
+
+      init: function () {
+        this.index = 0;
+        this.isVisible = false;
+
+        let images = this.data.images;
+        let markerId = this.data.markerId;
+        let widthDim = this.data.widthDim;
+        let heightDim = this.data.heightDim;
+
+        let element = document.getElementById("image-slider");
+        let marker = document.getElementById(markerId);
+        const camera = document.querySelector("[camera]");
+
+        marker.addEventListener("markerFound", e => {
+          this.isVisible = true;
+          element.setAttribute("breakloop", "false");
+
+          console.log(element);
+
+          cameraPosition = camera.object3D.position;
+          markerPosition = marker.object3D.position;
+
+
+          distance = cameraPosition.distanceTo(markerPosition);
+          element.setAttribute("width", (widthDim / distance).toString());
+          element.setAttribute(
+            "height",
+            (heightDim / distance).toString()
+          );
+
+
+        });
+
+        marker.addEventListener("markerLost", e => {
+          this.isVisible = false;
+          element.setAttribute("breakloop", "true");
+
+          element.setAttribute("width", "0.00000000002");
+          element.setAttribute("height", "0.00000000001");
+        });
+      }
+    });
+
     AFRAME.registerComponent("change-color-on-hover", {
       schema: {
         color: { default: "blue" }
@@ -356,24 +409,13 @@
       justify-content: center;
       align-items: center;
     }
-
-    .say-hi-button {
-      padding: 0.25em;
-      border-radius: 4px;
-      border: none;
-      background: white;
-      color: black;
-      width: 4em;
-      height: 2em;
-      z-index: 9999;
-    }
   </style>
 </head>
 
-<body style="margin : 0px; overflow: hidden;">
+<body style="margin : 0px; overflow: hidden;" id="body">
   <div class="arjs-loader">
     <div>
-      <p>Es Lädt bitte warten</p>
+      <p>Es Lädt bitte warten...</p>
     </div>
   </div>
 
@@ -388,38 +430,48 @@
         src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_1.jpg?v=1619598198727" />
       <img id="my-image4"
         src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
-      <a-asset-item id="bowser" src="https://cdn.glitch.com/06bd98b4-97ee-4c07-a546-fe39ca205034%2Fbowser.glb">
+      <img id="my-image5"
+        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
+      <a-asset-item id="bowser" response-type="arraybuffer"
+        src="https://cdn.glitch.com/06bd98b4-97ee-4c07-a546-fe39ca205034%2Fbowser.glb">
       </a-asset-item>
+      <a-asset-item id="area1" response-type="arraybuffer"
+        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fblockmodell_blender.glb?v=1620728303190">
+      </a-asset-item>
+
       <a-asset-item id="bird" response-type="arraybuffer"
         src="https://cdn.glitch.com/1061d524-9d0f-4b25-97fd-48ebd0fce63c%2Fsceneglb.glb?1546534633849"></a-asset-item>
-
     </a-assets>
 
     <a-nft type="nft"
       url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/PetabitMan/TC-flyer/master/tracker/vier/vier">
-      <a-box src="https://i.imgur.com/mYmmbrp.jpg" rotation="0 45 45" scale="30 30 30" position="0 50 -75"
-        animation="property: rotation; to: 360 0 0; loop: true; dur: 10000"></a-box>
+      <a-entity position="5 150 -150" gltf-model="#bowser" scale="5 5 5"></a-entity>
+    </a-nft>
+
+    <a-nft type="nft"
+      url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/PetabitMan/TC-flyer/master/tracker/lion/lion">
+      <a-entity position="5 150 -150" gltf-model="#area1" scale="1 1 1"></a-entity>
     </a-nft>
 
     <a-nft type="nft"
       url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
-      smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5" raycaster="objects: .clickable"
+      smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
       emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-      <a-entity position="5 150 -150" gltf-model="#tcb" scale="0.1 0.1 0.1" class="clickable" gesture-handler>
-      </a-entity>
+      <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
     </a-nft>
 
     <a-nft type="nft"
       url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
-      smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
+      smooth="true" smoothcount="1" smoothtolerance=".01" smooththreshold="1" id="yo" raycaster="objects: .clickable"
+      emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
       <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
-        <a-image width="120" height="60" src="#my-image2"></a-image>
+        <a-entity class="clickable" gesture-images=""></a-entity>
       </a-entity>
     </a-nft>
 
     <a-nft type="nft"
       url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
-      smooth="true" smoothCount="50" smoothTolerance=".01" smoothThreshold="5">
+      smooth="true" smoothcount="50" smoothtolerance=".01" smooththreshold="5">
       <a-entity scale="1.2 1.2 1.2" position="5 150 -150" rotation="-90 0 0">
         <a-entity position="-50 0 0">
           <a-cylinder color="white" height="40" radius="5" change-color-on-hover="color: red"></a-cylinder>
@@ -433,16 +485,22 @@
 
     <a-nft type="nft"
       url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
-      smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5" raycaster="objects: .clickable"
+      smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
       emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-      <a-entity position="5 150 -150" gltf-model="#bird" scale="0.8 0.8 0.8"
+      <a-entity position="50 150 -250" gltf-model="#bird" scale="0.8 0.8 0.8"
         animation-mixer="clip:Take 001; loop:2; timeScale: 0.5; crossFadeDuration: 1" class="clickable" gesture-handler>
       </a-entity>
     </a-nft>
 
     <a-nft type="nft"
+      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/TCB_Broschuere_Grafik/TCB_Broschuere_Grafik"
+      smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5">
+      <a-entity position="5 150 -150" gltf-model="#area1" rotation="-90 0 0" scale="1 1 1"></a-entity>
+    </a-nft>
+
+    <a-nft type="nft"
       url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
-      smooth="true" smoothCount="5" smoothTolerance=".01" smoothThreshold="10" raycaster="objects: .clickable"
+      smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="10" raycaster="objects: .clickable"
       emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
       <a-entity
         gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
@@ -451,10 +509,28 @@
 
     <a-entity camera>
       <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
-        geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015" material="color: grey; shader: flat">
+        geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
+        <a-image width="0.00000012" height="0.00000006" src="#my-image5" class="hidden" id="image-slider"
+          breakloop="true" next-images=""></a-image>
       </a-entity>
     </a-entity>
   </a-scene>
+  <script>
+    console.log("was")
+    let slider = document.getElementById("image-slider");
+    let slides = ["#my-image5", "#my-image2", "#my-image4", "#my-image3"];
+
+    slider.addEventListener("click", () => {
+
+      let slideindex = slides.indexOf(slider.getAttribute("src"));
+      if (slides.length - 1 === slideindex) {
+        slider.setAttribute("src", slides[0]);
+      } else {
+        slider.setAttribute("src", slides[(slideindex += 1)]);
+      }
+
+    });
+  </script>
 </body>
 
 </html>
