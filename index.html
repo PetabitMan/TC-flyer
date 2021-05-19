@@ -298,12 +298,12 @@
         }
       }
     });
-
+    let slides;
     AFRAME.registerComponent("gesture-images", {
       schema: {
         enabled: { default: true },
         images: {
-          default: ["#my-image", "my-image2", "#my-image3", "my-image4"]
+          default: ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"]
         },
         widthDim: { default: 115 },
         heightDim: { default: 180 },
@@ -324,16 +324,31 @@
         let marker = document.getElementById(markerId);
         const camera = document.querySelector("[camera]");
 
+        slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
+        // const click__event = new MouseEvent("click", { view: window, bubbles: true, cancelable: true });
+
         marker.addEventListener("markerFound", e => {
           this.isVisible = true;
 
           inc__button.classList.remove("hidden");
-
+          // inc__button.dispatchEvent(click__event)
           cameraPosition = camera.object3D.position;
           markerPosition = marker.object3D.position;
-          distance = cameraPosition.distanceTo(markerPosition);
-          element.setAttribute("width", (widthDim / distance).toString());
-          element.setAttribute("height", (heightDim / distance).toString());
+          console.log(element)
+
+
+          setInterval(() => {
+            distance = cameraPosition.distanceTo(markerPosition);
+            if (this.isVisible) {
+              element.setAttribute("width", (widthDim / distance).toString());
+              element.setAttribute("height", (heightDim / distance).toString());
+            } else {
+              element.setAttribute("width", (widthDim / distance / 100000).toString());
+              element.setAttribute("height", (heightDim / distance / 100000).toString());
+            }
+
+          }, 100)
+
         });
 
         marker.addEventListener("markerLost", e => {
@@ -347,37 +362,37 @@
       }
     });
 
-    AFRAME.registerComponent("change-color-on-hover", {
-      schema: {
-        color: { default: "blue" }
-      },
+    // AFRAME.registerComponent("change-color-on-hover", {
+    //   schema: {
+    //     color: { default: "blue" }
+    //   },
 
-      init: function () {
-        let data = this.data;
-        let images = ["#my-image", "my-image4", "#my-image2", "my-image3"];
-        let change = 1;
-        let currentImage = 0;
-        if (this.data.color === "red") {
-          change = -1;
-        }
-        let el = this.el;
-        let defaultColor = el.getAttribute("material").color;
+    //   init: function () {
+    //     let data = this.data;
+    //     let images = ["#my-image", "my-image4", "#my-image2", "my-image3"];
+    //     let change = 1;
+    //     let currentImage = 0;
+    //     if (this.data.color === "red") {
+    //       change = -1;
+    //     }
+    //     let el = this.el;
+    //     let defaultColor = el.getAttribute("material").color;
 
-        el.addEventListener("mouseenter", function () {
-          el.setAttribute("color", data.color);
-          setTimeout(() => {
-            document
-              .getElementById("testing-image")
-              .setAttribute("src", "#my-image");
-            currentImage += change;
-          }, 500);
-        });
+    //     el.addEventListener("mouseenter", function () {
+    //       el.setAttribute("color", data.color);
+    //       setTimeout(() => {
+    //         document
+    //           .getElementById("testing-image")
+    //           .setAttribute("src", "#my-image");
+    //         currentImage += change;
+    //       }, 500);
+    //     });
 
-        el.addEventListener("mouseleave", function () {
-          el.setAttribute("color", defaultColor);
-        });
-      }
-    });
+    //     el.addEventListener("mouseleave", function () {
+    //       el.setAttribute("color", defaultColor);
+    //     });
+    //   }
+    // });
   </script>
 
   <style>
@@ -406,10 +421,10 @@
 
     .buttons {
       position: absolute;
-      bottom: 0;
+      top: 0;
       left: 0;
-      width: 100%;
-      height: 5em;
+      width: 100vw;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -420,11 +435,20 @@
       padding: 0.25em;
       border-radius: 4px;
       border: none;
-      background: white;
+      background: none;
       color: black;
-      width: 4em;
-      height: 2em;
+      width: 100vw;
+      height: 100vh;
     }
+
+    .say-hi-button:focus {
+      background: none;
+    }
+
+    .say-hi-button:hover {
+      background: none;
+    }
+
 
     .hidden {
       display: none;
@@ -440,7 +464,7 @@
   </div>
   <div class="buttons">
     <button id="btn__nextimage" class="say-hi-button hidden">
-      Next Image
+
     </button>
   </div>
 
@@ -495,15 +519,13 @@
 
     <a-nft type="nft"
       url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
-      smooth="true" smoothcount="50" smoothtolerance=".01" smooththreshold="5">
-      <a-entity scale="1.2 1.2 1.2" position="5 150 -150" rotation="-90 0 0">
-        <a-entity position="-50 0 0">
-          <a-cylinder color="white" height="40" radius="5" change-color-on-hover="color: red"></a-cylinder>
+      smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="5" id="banana">
+      <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
+
+        <a-entity class="clickable"
+          gesture-images="markerId: banana; widthDim: 80; heightDim: 120; images: ['#my-image, '#my-image5', '#my-image5', '#my-image5', '#my-image2']">
         </a-entity>
-        <a-image id="testing-image" width="80" height="40" src="#my-image3"></a-image>
-        <a-entity position="50 0 0">
-          <a-cylinder color="white" height="40" radius="5" change-color-on-hover="color: green"></a-cylinder>
-        </a-entity>
+
       </a-entity>
     </a-nft>
 
@@ -542,13 +564,7 @@
     let button = document.getElementById("btn__nextimage");
 
     let slider = document.getElementById("image-slider");
-    let slides = [
-      "#my-image5",
-      "#my-image2",
-      "#my-image4",
-      "#my-image3",
-      "#my-image"
-    ];
+
 
     button.addEventListener("click", () => {
       let slideindex = slides.indexOf(slider.getAttribute("src"));
