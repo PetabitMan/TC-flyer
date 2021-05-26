@@ -3,6 +3,7 @@
 
 <head>
 
+
   <!-- Ar.js for nft markers  -->
   <script
     src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
@@ -307,38 +308,41 @@
 
   <!-- Activate imageslider with dynamic properties -->
   <script>
+
     let slides;
     AFRAME.registerComponent("image-slider-activate", {
       schema: {
         enabled: { default: true },
         images: {
-          default: ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"]
+          default: [{ img: '#my-image5', width: 120, height: 80, headline: 'peace' }, { img: '#my-image3', width: 120, height: 80, headline: 'was geht' }]
         },
-        widthDim: { default: 115 },
-        heightDim: { default: 180 },
         markerId: { default: "yo" }
       },
 
       init: function () {
         this.index = 0;
         this.isVisible = false;
+        slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
 
         let images = this.data.images;
+        let img__index = slides.indexOf(slider.getAttribute("src"));
         let markerId = this.data.markerId;
-        let widthDim = this.data.widthDim;
-        let heightDim = this.data.heightDim;
+        let widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11)) ?? 120
 
+
+        let heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12)) ?? 100
         let inc__button = document.getElementById("btn__nextimage");
         let buttons = document.getElementById("buttons");
         let element = document.getElementById("image-slider");
         let marker = document.getElementById(markerId);
+        let img__text = document.getElementById("img__text")
         const camera = document.querySelector("[camera]");
 
         disableZoom = document.createElement("meta")
         disableZoom.setAttribute("name", "viewport")
         disableZoom.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no")
 
-        slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
+
         // const click__event = new MouseEvent("click", { view: window, bubbles: true, cancelable: true });
 
         marker.addEventListener("markerFound", e => {
@@ -354,11 +358,20 @@
           setInterval(() => {
             distance = cameraPosition.distanceTo(markerPosition);
             if (this.isVisible) {
+              img__text.innerHTML = images[img__index * 4 + 3].toString().substring(9, 25).replace("}", "").replace("]", "").replace("'", "").replace("'", "")
+              img__index = slides.indexOf(slider.getAttribute("src"));
+              widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11)) ?? 120
+              heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12)) ?? 100
               let slide__height = (heightDim / distance);
               let slide__width = (widthDim / distance);
-              element.setAttribute("width", slide__width.toString());
-              element.setAttribute("height", slide__height.toString());
-              buttons.style = `width: ${slide__width * 895}px; height: ${slide__height * 870}px;}`
+              // limit size
+              if (slide__width * 895 < (window.screen.width - 30)) {
+                element.setAttribute("width", slide__width.toString());
+                element.setAttribute("height", slide__height.toString());
+                buttons.style = `width: ${slide__width * 895}px; height: ${slide__height * 885}px;}`
+              }
+
+
             } else {
               element.setAttribute("width", "0.000000000000001");
               element.setAttribute("height", "0.000000000000001");
@@ -389,7 +402,11 @@
     body,
     html {
       height: 100%;
+      margin: 0;
+      padding: 0;
     }
+
+
 
     div.wrap {
       height: 100%;
@@ -419,6 +436,7 @@
       align-items: center;
     }
 
+
     .center {
       position: absolute;
       top: 0;
@@ -442,7 +460,7 @@
       align-items: flex-end;
       justify-content: space-between;
       position: relative;
-      bottom: 5%;
+      bottom: 5.5%;
       left: 2.05%
     }
 
@@ -489,6 +507,16 @@
       display: none;
       pointer-events: none;
     }
+
+    .img__text {
+      position: relative;
+      top: 40px;
+    }
+
+    .hidden p {
+      display: none;
+      pointer-events: none;
+    }
   </style>
 </head>
 
@@ -512,6 +540,7 @@
           </svg>
 
         </button>
+        <p class="img__text" id="img__text">yo</p>
         <button class="say-bye-button " id="btn__nextimage">
           <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px" y="0px" viewBox="0 0 57.8 25.4" style="enable-background:new 0 0 57.8 25.4;" xml:space="preserve">
@@ -578,7 +607,9 @@
         smooth="true" smoothcount="1" smoothtolerance=".01" smooththreshold="1" id="yo" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
-          <a-entity class="clickable" image-slider-activate=""></a-entity>
+          <a-entity class="clickable"
+            image-slider-activate="markerId: yo; images: [{img: '#my-image, width: 120, height: 120, headline: 'test'}, {img: '#my-image2, width: 120, height: 80, headline: 'yo'}, {img: '#my-image3, width: 100, height: 60, headline: 'was geht'},  {img: '#my-image4, width: 120, height: 80, headline: 'was geeeeht'},  {img: '#my-image5, width: 120, height: 80, headline: 'lol'}]">
+          </a-entity>
         </a-entity>
       </a-nft>
 
@@ -588,7 +619,7 @@
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
 
           <a-entity class="clickable"
-            image-slider-activate="markerId: banana; widthDim: 80; heightDim: 120; images: ['#my-image, '#my-image5', '#my-image5', '#my-image5', '#my-image2']">
+            image-slider-activate="markerId: banana; images: [{img: '#my-image, width: 80, height: 120, headline: 'test'}, {img: '#my-image2, width: 120, height: 80, headline: 'yo'}, {img: '#my-image3, width: 100, height: 60, headline: 'was geht'},  {img: '#my-image4, width: 120, height: 80, headline: 'was geeeeht'},  {img: '#my-image5, width: 120, height: 80, headline: 'lol'}]">
           </a-entity>
 
         </a-entity>
@@ -622,12 +653,13 @@
       <a-entity camera>
         <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
           geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
-          <a-image width="0.00000012" height="0.00000006" src="#my-image5" id="image-slider"></a-image>
+          <a-image width="0.00000012" height="0.00000006" src="#my-image" id="image-slider"></a-image>
         </a-entity>
       </a-entity>
     </a-scene>
   </div>
   <script>
+
     let next__button = document.getElementById("btn__nextimage");
     let back__button = document.getElementById("btn__lastimage");
     let slider = document.getElementById("image-slider");
