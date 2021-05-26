@@ -2,11 +2,16 @@
 <html>
 
 <head>
+
+  <!-- Ar.js for nft markers  -->
   <script
     src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
 
+  <!-- Aframe for a-frame components and end a frame extras for gesture detecting -->
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v5.0.1/dist/aframe-extras.min.js"></script>
+
+  <!-- Gesture decting add to scene in order to work -->
   <script>
     AFRAME.registerComponent("gesture-detector", {
       schema: {
@@ -195,7 +200,7 @@
       }
     });
   </script>
-
+  <!-- gesture handling to control 3d objects -->
   <script>
     AFRAME.registerComponent("gesture-handler", {
       schema: {
@@ -298,8 +303,12 @@
         }
       }
     });
+  </script>
+
+  <!-- Activate imageslider with dynamic properties -->
+  <script>
     let slides;
-    AFRAME.registerComponent("gesture-images", {
+    AFRAME.registerComponent("image-slider-activate", {
       schema: {
         enabled: { default: true },
         images: {
@@ -320,9 +329,14 @@
         let heightDim = this.data.heightDim;
 
         let inc__button = document.getElementById("btn__nextimage");
+        let buttons = document.getElementById("buttons");
         let element = document.getElementById("image-slider");
         let marker = document.getElementById(markerId);
         const camera = document.querySelector("[camera]");
+
+        disableZoom = document.createElement("meta")
+        disableZoom.setAttribute("name", "viewport")
+        disableZoom.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no")
 
         slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
         // const click__event = new MouseEvent("click", { view: window, bubbles: true, cancelable: true });
@@ -330,21 +344,24 @@
         marker.addEventListener("markerFound", e => {
           this.isVisible = true;
 
-          inc__button.classList.remove("hidden");
+          buttons.classList.remove("hidden");
           // inc__button.dispatchEvent(click__event)
           cameraPosition = camera.object3D.position;
           markerPosition = marker.object3D.position;
-          console.log(element)
+          document.querySelector("head").appendChild(disableZoom)
 
 
           setInterval(() => {
             distance = cameraPosition.distanceTo(markerPosition);
             if (this.isVisible) {
-              element.setAttribute("width", (widthDim / distance).toString());
-              element.setAttribute("height", (heightDim / distance).toString());
+              let slide__height = (heightDim / distance);
+              let slide__width = (widthDim / distance);
+              element.setAttribute("width", slide__width.toString());
+              element.setAttribute("height", slide__height.toString());
+              buttons.style = `width: ${slide__width * 895}px; height: ${slide__height * 870}px;}`
             } else {
-              element.setAttribute("width", (widthDim / distance / 100000).toString());
-              element.setAttribute("height", (heightDim / distance / 100000).toString());
+              element.setAttribute("width", "0.000000000000001");
+              element.setAttribute("height", "0.000000000000001");
             }
 
           }, 100)
@@ -354,48 +371,31 @@
         marker.addEventListener("markerLost", e => {
           this.isVisible = false;
 
-          inc__button.classList.add("hidden");
+          buttons.classList.add("hidden");
+          document.querySelector("head").removeChild(disableZoom)
 
           element.setAttribute("width", "0.00000000002");
           element.setAttribute("height", "0.00000000001");
         });
+      },
+      tick: function (time, deltaTime) {
+
       }
     });
 
-    // AFRAME.registerComponent("change-color-on-hover", {
-    //   schema: {
-    //     color: { default: "blue" }
-    //   },
-
-    //   init: function () {
-    //     let data = this.data;
-    //     let images = ["#my-image", "my-image4", "#my-image2", "my-image3"];
-    //     let change = 1;
-    //     let currentImage = 0;
-    //     if (this.data.color === "red") {
-    //       change = -1;
-    //     }
-    //     let el = this.el;
-    //     let defaultColor = el.getAttribute("material").color;
-
-    //     el.addEventListener("mouseenter", function () {
-    //       el.setAttribute("color", data.color);
-    //       setTimeout(() => {
-    //         document
-    //           .getElementById("testing-image")
-    //           .setAttribute("src", "#my-image");
-    //         currentImage += change;
-    //       }, 500);
-    //     });
-
-    //     el.addEventListener("mouseleave", function () {
-    //       el.setAttribute("color", defaultColor);
-    //     });
-    //   }
-    // });
   </script>
 
   <style>
+    body,
+    html {
+      height: 100%;
+    }
+
+    div.wrap {
+      height: 100%;
+      overflow: hidden;
+    }
+
     .arjs-loader {
       height: 100vh;
       width: 100vw;
@@ -419,7 +419,7 @@
       align-items: center;
     }
 
-    .buttons {
+    .center {
       position: absolute;
       top: 0;
       left: 0;
@@ -428,8 +428,24 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 10;
     }
+
+    .buttons {
+      z-index: 10;
+      border-left-width: 15px;
+      border-right-width: 15px;
+      border-bottom-width: 40px;
+      border-top-width: 15px;
+      border-color: white;
+      border-style: solid;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      position: relative;
+      bottom: 5%;
+      left: 2.05%
+    }
+
 
     .say-hi-button {
       padding: 0.25em;
@@ -437,8 +453,22 @@
       border: none;
       background: none;
       color: black;
-      width: 100vw;
-      height: 100vh;
+      width: 50px;
+      height: 30px;
+      position: relative;
+      top: 35px;
+    }
+
+    .say-bye-button {
+      padding: 0.25em;
+      border-radius: 4px;
+      border: none;
+      background: none;
+      color: black;
+      width: 50px;
+      height: 30px;
+      position: relative;
+      top: 35px;
     }
 
     .say-hi-button:focus {
@@ -452,121 +482,152 @@
 
     .hidden {
       display: none;
+      pointer-events: none;
+    }
+
+    .hidden button {
+      display: none;
+      pointer-events: none;
     }
   </style>
 </head>
 
 <body style="margin : 0px; overflow: hidden;" id="body">
-  <div class="arjs-loader">
-    <div>
-      <p>Es Lädt bitte warten...</p>
+  <div class="wrap">
+
+
+    <div class="arjs-loader">
+      <div>
+        <p>Es Lädt bitte warten...</p>
+      </div>
     </div>
-  </div>
-  <div class="buttons">
-    <button id="btn__nextimage" class="say-hi-button hidden">
+    <div class="center">
+      <div class="buttons hidden" id="buttons">
+        <button class="say-hi-button " id="btn__lastimage">
+          <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 57.8 25.4" style="enable-background:new 0 0 57.8 25.4;" xml:space="preserve">
+            <path d="M0.4,11.8L0.4,11.8c0-0.1,0-0.1,0.1-0.2c0-0.1,0.1-0.1,0.1-0.1L13.8,0.3c0.6-0.5,1.6-0.4,2.1,0.2s0.4,1.6-0.2,2.1L5.6,11.2
+	h50.7c0.8,0,1.5,0.7,1.5,1.5s-0.7,1.5-1.5,1.5H5.6l10.1,8.6c0.7,0.5,0.7,1.5,0.2,2.1c-0.3,0.3-0.7,0.5-1.1,0.5s-0.7-0.1-1-0.3
+	L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4,11.8z" />
+          </svg>
 
-    </button>
-  </div>
+        </button>
+        <button class="say-bye-button " id="btn__nextimage">
+          <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 57.8 25.4" style="enable-background:new 0 0 57.8 25.4;" xml:space="preserve">
+            <path d="M57.8,12.7c0,0.3-0.1,0.7-0.3,0.9c0,0,0,0,0,0c0,0.1-0.1,0.1-0.1,0.2c0,0,0,0,0,0L44,25.1c-0.3,0.2-0.6,0.3-1,0.3
+         c-0.4,0-0.8-0.2-1.1-0.5c-0.5-0.6-0.5-1.6,0.2-2.1l10.1-8.6H1.5c-0.8,0-1.5-0.7-1.5-1.5c0-0.8,0.7-1.5,1.5-1.5h50.7L42.1,2.6
+         c-0.6-0.5-0.7-1.5-0.2-2.1c0.5-0.6,1.5-0.7,2.1-0.2l13.2,11.2c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0,0
+         C57.7,12.1,57.8,12.4,57.8,12.7z" />
+          </svg>
+        </button>
+      </div>
+    </div>
 
-  <!-- a-frame scene -->
-  <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
-    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
-    gesture-detector id="scene">
-    <a-assets>
-      <img id="my-image" src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fmery.jpg?v=1619597239473" />
-      <img id="my-image2" src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fme.jpg?v=1619597297120" />
-      <img id="my-image3"
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_1.jpg?v=1619598198727" />
-      <img id="my-image4"
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
-      <img id="my-image5"
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
-      <a-asset-item id="bowser" response-type="arraybuffer"
-        src="https://cdn.glitch.com/06bd98b4-97ee-4c07-a546-fe39ca205034%2Fbowser.glb">
-      </a-asset-item>
-      <a-asset-item id="area1" response-type="arraybuffer"
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fblockmodell_blender.glb?v=1620728303190">
-      </a-asset-item>
 
-      <a-asset-item id="bird" response-type="arraybuffer"
-        src="https://cdn.glitch.com/1061d524-9d0f-4b25-97fd-48ebd0fce63c%2Fsceneglb.glb?1546534633849"></a-asset-item>
-    </a-assets>
+    <!-- a-frame scene -->
+    <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
+      gesture-detector id="scene">
+      <a-assets>
+        <img id="my-image"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fmery.jpg?v=1619597239473" />
+        <img id="my-image2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fme.jpg?v=1619597297120" />
+        <img id="my-image3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_1.jpg?v=1619598198727" />
+        <img id="my-image4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
+        <img id="my-image5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
+        <a-asset-item id="bowser" response-type="arraybuffer"
+          src="https://cdn.glitch.com/06bd98b4-97ee-4c07-a546-fe39ca205034%2Fbowser.glb">
+        </a-asset-item>
+        <a-asset-item id="area1" response-type="arraybuffer"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fblockmodell_blender.glb?v=1620728303190">
+        </a-asset-item>
 
-    <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier">
-      <a-entity position="5 150 -150" gltf-model="#bowser" scale="5 5 5"></a-entity>
-    </a-nft>
+        <a-asset-item id="bird" response-type="arraybuffer"
+          src="https://cdn.glitch.com/1061d524-9d0f-4b25-97fd-48ebd0fce63c%2Fsceneglb.glb?1546534633849"></a-asset-item>
+      </a-assets>
 
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/PetabitMan/TC-flyer/master/tracker/lion/lion">
-      <a-entity position="5 150 -150" gltf-model="#area1" scale="1 1 1"></a-entity>
-    </a-nft>
+      <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier">
+        <a-entity position="5 150 -150" gltf-model="#bowser" scale="5 5 5"></a-entity>
+      </a-nft>
 
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
-      smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
-      emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-      <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
-    </a-nft>
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/PetabitMan/TC-flyer/master/tracker/lion/lion">
+        <a-entity position="5 150 -150" gltf-model="#area1" scale="1 1 1"></a-entity>
+      </a-nft>
 
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
-      smooth="true" smoothcount="1" smoothtolerance=".01" smooththreshold="1" id="yo" raycaster="objects: .clickable"
-      emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-      <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
-        <a-entity class="clickable" gesture-images=""></a-entity>
-      </a-entity>
-    </a-nft>
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
+        smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+        <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
+      </a-nft>
 
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
-      smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="5" id="banana">
-      <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
-
-        <a-entity class="clickable"
-          gesture-images="markerId: banana; widthDim: 80; heightDim: 120; images: ['#my-image, '#my-image5', '#my-image5', '#my-image5', '#my-image2']">
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
+        smooth="true" smoothcount="1" smoothtolerance=".01" smooththreshold="1" id="yo" raycaster="objects: .clickable"
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+        <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
+          <a-entity class="clickable" image-slider-activate=""></a-entity>
         </a-entity>
+      </a-nft>
 
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
+        smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="5" id="banana">
+        <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
+
+          <a-entity class="clickable"
+            image-slider-activate="markerId: banana; widthDim: 80; heightDim: 120; images: ['#my-image, '#my-image5', '#my-image5', '#my-image5', '#my-image2']">
+          </a-entity>
+
+        </a-entity>
+      </a-nft>
+
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
+        smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+        <a-entity position="50 150 -250" gltf-model="#bird" scale="0.8 0.8 0.8"
+          animation-mixer="clip:Take 001; loop:2; timeScale: 0.5; crossFadeDuration: 1" class="clickable"
+          gesture-handler>
+        </a-entity>
+      </a-nft>
+
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/TCB_Broschuere_Grafik/TCB_Broschuere_Grafik"
+        smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5">
+        <a-entity position="5 150 -150" gltf-model="#area1" rotation="-90 0 0" scale="1 1 1"></a-entity>
+      </a-nft>
+
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
+        smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="10" raycaster="objects: .clickable"
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+        <a-entity
+          gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+          position="0 0 0" scale="5 5 5" class="clickable" gesture-handler></a-entity>
+      </a-nft>
+
+      <a-entity camera>
+        <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
+          geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
+          <a-image width="0.00000012" height="0.00000006" src="#my-image5" id="image-slider"></a-image>
+        </a-entity>
       </a-entity>
-    </a-nft>
-
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
-      smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
-      emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-      <a-entity position="50 150 -250" gltf-model="#bird" scale="0.8 0.8 0.8"
-        animation-mixer="clip:Take 001; loop:2; timeScale: 0.5; crossFadeDuration: 1" class="clickable" gesture-handler>
-      </a-entity>
-    </a-nft>
-
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/TCB_Broschuere_Grafik/TCB_Broschuere_Grafik"
-      smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5">
-      <a-entity position="5 150 -150" gltf-model="#area1" rotation="-90 0 0" scale="1 1 1"></a-entity>
-    </a-nft>
-
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
-      smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="10" raycaster="objects: .clickable"
-      emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-      <a-entity
-        gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-        position="0 0 0" scale="5 5 5" class="clickable" gesture-handler></a-entity>
-    </a-nft>
-
-    <a-entity camera>
-      <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
-        geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
-        <a-image width="0.00000012" height="0.00000006" src="#my-image5" id="image-slider"></a-image>
-      </a-entity>
-    </a-entity>
-  </a-scene>
+    </a-scene>
+  </div>
   <script>
-    let button = document.getElementById("btn__nextimage");
-
+    let next__button = document.getElementById("btn__nextimage");
+    let back__button = document.getElementById("btn__lastimage");
     let slider = document.getElementById("image-slider");
 
 
-    button.addEventListener("click", () => {
+    next__button.addEventListener("click", () => {
       let slideindex = slides.indexOf(slider.getAttribute("src"));
       if (slides.length - 1 === slideindex) {
         slider.setAttribute("src", slides[0]);
@@ -575,7 +636,17 @@
       }
 
     });
+    back__button.addEventListener("click", () => {
+      let slideindex = slides.indexOf(slider.getAttribute("src"));
+      if (slideindex === 0) {
+        slider.setAttribute("src", slides[slides.length - 1]);
+      } else {
+        slider.setAttribute("src", slides[(slideindex -= 1)]);
+      }
+
+    });
   </script>
+
 </body>
 
 </html>
