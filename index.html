@@ -370,6 +370,10 @@
                 element.setAttribute("width", slide__width.toString());
                 element.setAttribute("height", slide__height.toString());
                 buttons.style = `width: ${slide__width * 895}px; height: ${slide__height * 885}px;}`
+              } else if (slide__width * 895 < (window.screen.width / 2.5)) {
+                element.setAttribute("width", slide__width.toString());
+                element.setAttribute("height", slide__height.toString());
+                buttons.style = `width: ${slide__width * 895}px; height: ${slide__height * 885}px;}`
               }
 
 
@@ -563,15 +567,19 @@
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
         <img id="my-image5"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
-        <a-asset-item id="bowser" response-type="arraybuffer"
+        <!-- <a-asset-item id="bowser" response-type="arraybuffer"
           src="https://cdn.glitch.com/06bd98b4-97ee-4c07-a546-fe39ca205034%2Fbowser.glb">
-        </a-asset-item>
+        </a-asset-item> -->
         <a-asset-item id="area1" response-type="arraybuffer"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fblockmodell_blender.glb?v=1620728303190">
         </a-asset-item>
 
-        <a-asset-item id="bird" response-type="arraybuffer"
+        <!-- <a-asset-item id="bird" response-type="arraybuffer"
           src="https://cdn.glitch.com/1061d524-9d0f-4b25-97fd-48ebd0fce63c%2Fsceneglb.glb?1546534633849"></a-asset-item>
+      </a-assets> -->
+        <a-asset-item id="area2" response-type="arraybuffer"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ftcb_alles_blender.glb?v=1622118350883">
+        </a-asset-item>
       </a-assets>
 
       <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier">
@@ -590,14 +598,17 @@
         <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
       </a-nft>
 
-      <a-nft type="nft" id="peace"
+      <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kala/kala"
-        smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
+        smooth="true" smoothCount="20" smoothTolerance=".01" smoothThreshold="10" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
 
+        <a-entity gltf-model="#area1" position="150 -50 -200" scale="0.75 0.75 0.75" class="clickable"
+          rotation="-120 30 15" gesture-handler color="red">
+        </a-entity>
         <a-entity
           gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-          position="50 150 -200" scale="2 2 2" class="clickable" gesture-handler></a-entity>>
+          position="0 0 0" scale="5 5 5" class="clickable" gesture-handler></a-entity>
 
       </a-nft>
       <!-- <a-nft type="nft"
