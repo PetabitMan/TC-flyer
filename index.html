@@ -366,16 +366,11 @@
               let slide__height = (heightDim / distance);
               let slide__width = (widthDim / distance);
               // limit size
-              if (slide__width * 895 < (window.screen.width - 30)) {
-                element.setAttribute("width", slide__width.toString());
-                element.setAttribute("height", slide__height.toString());
-                buttons.style = `width: ${slide__width * 895}px; height: ${slide__height * 885}px;}`
-              } else if (slide__width * 895 < (window.screen.width / 2.5)) {
+              if (slide__width * 895 < (window.screen.width - 30) && slide__width * 895 > (window.screen.width / 2.5)) {
                 element.setAttribute("width", slide__width.toString());
                 element.setAttribute("height", slide__height.toString());
                 buttons.style = `width: ${slide__width * 895}px; height: ${slide__height * 885}px;}`
               }
-
 
             } else {
               element.setAttribute("width", "0.000000000000001");
@@ -524,7 +519,7 @@
 
     <div class="arjs-loader">
       <div>
-        <p>Es Lädt bitte warten...</p>
+        <p>Ihre AR Erfahrung wird vorbereitet...</p>
       </div>
     </div>
     <div class="center">
@@ -599,16 +594,14 @@
       </a-nft>
 
       <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kala/kala"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kalanice/kalanice"
         smooth="true" smoothCount="20" smoothTolerance=".01" smoothThreshold="10" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
 
         <a-entity gltf-model="#area1" position="150 -50 -200" scale="0.75 0.75 0.75" class="clickable"
-          rotation="-120 30 15" gesture-handler color="red">
+          rotation="-120 30 15" gesture-handler>
         </a-entity>
-        <a-entity
-          gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-          position="0 0 0" scale="5 5 5" class="clickable" gesture-handler></a-entity>
+
 
       </a-nft>
       <!-- <a-nft type="nft"
@@ -697,6 +690,11 @@
       }
 
     });
+
+    let area1oo = document.getElementById("area1")
+    area1oo.addEventListener("click", () => {
+      window.alert("peace yo")
+    })
   </script>
 
 </body>
