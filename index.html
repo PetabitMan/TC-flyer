@@ -12,9 +12,9 @@
   <!-- Aframe for a-frame components and end a frame extras for gesture detecting -->
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v5.0.1/dist/aframe-extras.min.js"></script>
-
   <!-- Gesture decting add to scene in order to work -->
   <script>
+
     AFRAME.registerComponent("gesture-detector", {
       schema: {
         element: { default: "" }
@@ -195,6 +195,7 @@
         return touchState;
       },
 
+
       getEventPrefix(touchCount) {
         const numberNames = ["one", "two", "three", "many"];
 
@@ -230,7 +231,6 @@
           this.isVisible = false;
         });
       },
-
       update: function () {
         if (this.data.enabled) {
           this.el.sceneEl.addEventListener(
@@ -590,7 +590,7 @@
         <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
       </a-nft>
       <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/plan_no-bg/plan_no-bg"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/yo/yo"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
