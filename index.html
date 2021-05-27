@@ -578,10 +578,10 @@
         <a-entity position="5 150 -150" gltf-model="#bowser" scale="5 5 5"></a-entity>
       </a-nft>
 
-      <a-nft type="nft"
+      <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/PetabitMan/TC-flyer/master/tracker/lion/lion">
         <a-entity position="5 150 -150" gltf-model="#area1" scale="1 1 1"></a-entity>
-      </a-nft>
+      </a-nft> -->
 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
@@ -589,17 +589,26 @@
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
       </a-nft>
-      <a-nft type="nft"
+
+      <a-nft type="nft" id="peace"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/peace/peace"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-        <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
-      </a-nft>
 
+        <a-entity
+          gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+          position="0 0 0" scale="5 5 5" class="clickable" gesture-handler></a-entity>>
+
+      </a-nft>
+      <!-- <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/yo/yo"
+        smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+        <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
+      </a-nft> -->
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
-        smooth="true" smoothcount="1" smoothtolerance=".01" smooththreshold="1" id="yo" raycaster="objects: .clickable"
-        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+        id="yo" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
           <a-entity class="clickable"
             image-slider-activate="markerId: yo; images: [{img: '#my-image, width: 120, height: 120, headline: 'test'}, {img: '#my-image2, width: 120, height: 80, headline: 'yo'}, {img: '#my-image3, width: 100, height: 60, headline: 'was geht'},  {img: '#my-image4, width: 120, height: 80, headline: 'was geeeeht'},  {img: '#my-image5, width: 120, height: 80, headline: 'lol'}]">
@@ -609,7 +618,7 @@
 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
-        smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="5" id="banana">
+        id="banana" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
 
           <a-entity class="clickable"
@@ -629,11 +638,11 @@
         </a-entity>
       </a-nft>
 
-      <a-nft type="nft"
+      <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/TCB_Broschuere_Grafik/TCB_Broschuere_Grafik"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5">
         <a-entity position="5 150 -150" gltf-model="#area1" rotation="-90 0 0" scale="1 1 1"></a-entity>
-      </a-nft>
+      </a-nft> -->
 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
