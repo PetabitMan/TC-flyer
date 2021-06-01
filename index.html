@@ -12,6 +12,7 @@
   <!-- Aframe for a-frame components and end a frame extras for gesture detecting -->
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v5.0.1/dist/aframe-extras.min.js"></script>
+
   <!-- Gesture decting add to scene in order to work -->
   <script>
 
@@ -396,6 +397,39 @@
       }
     });
 
+    AFRAME.registerComponent('clickYo', {
+      schema: {
+
+      },
+      init: function () {
+        this.el.addEventListener("click", () => {
+          window.alert("yo Mama")
+          this.el.setAttribute("rotation", "0 0 0");
+        })
+      },
+
+      events: {
+        click: function (evt) {
+          window.alert("yo Mama")
+          this.el.setAttribute("rotation", "0 0 0");
+        }
+      }
+    });
+    AFRAME.registerComponent('modify-materials', {
+      init: function () {
+        // Wait for model to load.
+        this.el.addEventListener('model-loaded', () => {
+          // Grab the mesh / scene.
+          const obj = this.el.getObject3D('mesh');
+          // Go over the submeshes and modify materials we want.
+          obj.traverse(node => {
+            if (node.name.indexOf('ship') !== -1) {
+              node.material.color.set('red');
+            }
+          });
+        });
+      }
+    });
   </script>
 
   <style>
@@ -550,7 +584,7 @@
     <!-- a-frame scene -->
     <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
-      gesture-detector id="scene">
+      loading-screen="dotsColor: red; backgroundColor: black" gesture-detector id="scene" stats>
       <a-assets>
         <img id="my-image"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fmery.jpg?v=1619597239473" />
@@ -572,8 +606,11 @@
         <!-- <a-asset-item id="bird" response-type="arraybuffer"
           src="https://cdn.glitch.com/1061d524-9d0f-4b25-97fd-48ebd0fce63c%2Fsceneglb.glb?1546534633849"></a-asset-item>
       </a-assets> -->
-        <a-asset-item id="area2" response-type="arraybuffer"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ftcb_alles_blender.glb?v=1622118350883">
+        <!-- <a-asset-item id="area2" response-type="arraybuffer"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ftcb_low_poly.glb?v=1622469315500">
+        </a-asset-item> -->
+        <a-asset-item id="area3" response-type="arraybuffer"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
         </a-asset-item>
       </a-assets>
 
@@ -594,12 +631,15 @@
       </a-nft>
 
       <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kalanice/kalanice"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kala/kala"
         smooth="true" smoothCount="20" smoothTolerance=".01" smoothThreshold="10" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
 
-        <a-entity gltf-model="#area1" position="150 -50 -200" scale="0.75 0.75 0.75" class="clickable"
-          rotation="-120 30 15" gesture-handler>
+        <!-- 
+        <a-entity light="type: directional; color: #FFF; intensity: 10" position="-0.5 1 1"></a-entity> -->
+
+        <a-entity gltf-model="#area3" position="150 -50 -200" scale="290.75 290.75 290.75" class="clickable"
+          rotation="-120 30 15">
         </a-entity>
 
 
@@ -691,10 +731,7 @@
 
     });
 
-    let area1oo = document.getElementById("area1")
-    area1oo.addEventListener("click", () => {
-      window.alert("peace yo")
-    })
+
   </script>
 
 </body>
