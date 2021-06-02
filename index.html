@@ -596,32 +596,28 @@
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
         <img id="my-image5"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
-        <!-- <a-asset-item id="bowser" response-type="arraybuffer"
+        <a-asset-item id="bowser" response-type="arraybuffer"
           src="https://cdn.glitch.com/06bd98b4-97ee-4c07-a546-fe39ca205034%2Fbowser.glb">
-        </a-asset-item> -->
+        </a-asset-item>
         <a-asset-item id="area1" response-type="arraybuffer"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fblockmodell_blender.glb?v=1620728303190">
         </a-asset-item>
 
-        <!-- <a-asset-item id="bird" response-type="arraybuffer"
+        <a-asset-item id="bird" response-type="arraybuffer"
           src="https://cdn.glitch.com/1061d524-9d0f-4b25-97fd-48ebd0fce63c%2Fsceneglb.glb?1546534633849"></a-asset-item>
-      </a-assets> -->
-        <!-- <a-asset-item id="area2" response-type="arraybuffer"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ftcb_low_poly.glb?v=1622469315500">
-        </a-asset-item> -->
-        <a-asset-item id="area3" response-type="arraybuffer"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
-        </a-asset-item>
+      </a-assets>
+      <a-asset-item id="area2" response-type="arraybuffer"
+        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ftcb_low_poly.glb?v=1622469315500">
+      </a-asset-item>
+      <a-asset-item id="area3" response-type="arraybuffer"
+        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
+      </a-asset-item>
       </a-assets>
 
       <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier">
         <a-entity position="5 150 -150" gltf-model="#bowser" scale="5 5 5"></a-entity>
       </a-nft>
 
-      <!-- <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/PetabitMan/TC-flyer/master/tracker/lion/lion">
-        <a-entity position="5 150 -150" gltf-model="#area1" scale="1 1 1"></a-entity>
-      </a-nft> -->
 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
@@ -639,17 +635,14 @@
         <a-entity light="type: directional; color: #FFF; intensity: 10" position="-0.5 1 1"></a-entity> -->
 
         <a-entity gltf-model="#area3" position="150 -50 -200" scale="290.75 290.75 290.75" class="clickable"
-          rotation="-120 30 15">
+          rotation="-120 30 15" gesture-handler>
         </a-entity>
 
 
       </a-nft>
-      <!-- <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/yo/yo"
-        smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
-        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-        <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
-      </a-nft> -->
+
+
+
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
         id="yo" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
@@ -682,11 +675,7 @@
         </a-entity>
       </a-nft>
 
-      <!-- <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/TCB_Broschuere_Grafik/TCB_Broschuere_Grafik"
-        smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5">
-        <a-entity position="5 150 -150" gltf-model="#area1" rotation="-90 0 0" scale="1 1 1"></a-entity>
-      </a-nft> -->
+
 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
