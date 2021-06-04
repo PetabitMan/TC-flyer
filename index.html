@@ -312,6 +312,7 @@
   <script>
 
     let slides;
+
     AFRAME.registerComponent("image-slider-activate", {
       schema: {
         enabled: { default: true },
@@ -331,14 +332,14 @@
         let markerId = this.data.markerId;
         let widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11)) ?? 120
 
-
+        const camera = document.querySelector("[camera]");
         let heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12)) ?? 100
-        let inc__button = document.getElementById("btn__nextimage");
+
         let buttons = document.getElementById("buttons");
         let element = document.getElementById("image-slider");
         let marker = document.getElementById(markerId);
         let img__text = document.getElementById("img__text")
-        const camera = document.querySelector("[camera]");
+
 
         disableZoom = document.createElement("meta")
         disableZoom.setAttribute("name", "viewport")
@@ -360,6 +361,7 @@
           setInterval(() => {
             distance = cameraPosition.distanceTo(markerPosition);
             if (this.isVisible) {
+              element.setAttribute('visible', true);
               img__text.innerHTML = images[img__index * 4 + 3].toString().substring(9, 25).replace("}", "").replace("]", "").replace("'", "").replace("'", "")
               img__index = slides.indexOf(slider.getAttribute("src"));
               widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11)) ?? 120
@@ -374,8 +376,9 @@
               }
 
             } else {
-              element.setAttribute("width", "0.000000000000001");
-              element.setAttribute("height", "0.000000000000001");
+              // setAttribute('visible', false); might beetter
+              element.setAttribute('visible', false);
+
             }
 
           }, 100)
@@ -388,48 +391,66 @@
           buttons.classList.add("hidden");
           document.querySelector("head").removeChild(disableZoom)
 
-          element.setAttribute("width", "0.00000000002");
-          element.setAttribute("height", "0.00000000001");
+          element.setAttribute('visible', false);
         });
       },
       tick: function (time, deltaTime) {
 
       }
     });
-
-    AFRAME.registerComponent('clickYo', {
+    AFRAME.registerComponent('objectmodel-detected', {
       schema: {
 
       },
       init: function () {
-        this.el.addEventListener("click", () => {
-          window.alert("yo Mama")
-          this.el.setAttribute("rotation", "0 0 0");
+        let model = document.getElementById("area")
+        let modelMarker = document.getElementById("modelmarker")
+        // cameraPosition = camera.object3D.position;
+        let modelMarkerPosition = modelMarker.object3D.position;
+        modelMarker.addEventListener("markerFound", e => {
+          model.setAttribute('visible', true);
+        })
+        modelMarker.addEventListener("markerLost", e => {
+
         })
       },
+      tick: function (time, deltaTime) {
 
-      events: {
-        click: function (evt) {
-          window.alert("yo Mama")
-          this.el.setAttribute("rotation", "0 0 0");
-        }
       }
-    });
-    AFRAME.registerComponent('modify-materials', {
-      init: function () {
-        // Wait for model to load.
-        this.el.addEventListener('model-loaded', () => {
-          // Grab the mesh / scene.
-          const obj = this.el.getObject3D('mesh');
-          // Go over the submeshes and modify materials we want.
-          obj.traverse(node => {
-            if (node.name.indexOf('ship') !== -1) {
-              node.material.color.set('red');
-            }
-          });
-        });
-      }
-    });
+    })
+    // AFRAME.registerComponent('clickYo', {
+    //   schema: {
+
+    //   },
+    //   init: function () {
+    //     this.el.addEventListener("click", () => {
+    //       window.alert("yo Mama")
+    //       this.el.setAttribute("rotation", "0 0 0");
+    //     })
+    //   },
+
+    //   events: {
+    //     click: function (evt) {
+    //       window.alert("yo Mama")
+    //       this.el.setAttribute("rotation", "0 0 0");
+    //     }
+    //   }
+    // });
+    // AFRAME.registerComponent('modify-materials', {
+    //   init: function () {
+    //     // Wait for model to load.
+    //     this.el.addEventListener('model-loaded', () => {
+    //       // Grab the mesh / scene.
+    //       const obj = this.el.getObject3D('mesh');
+    //       // Go over the submeshes and modify materials we want.
+    //       obj.traverse(node => {
+    //         if (node.name.indexOf('ship') !== -1) {
+    //           node.material.color.set('red');
+    //         }
+    //       });
+    //     });
+    //   }
+    // });
   </script>
 
   <style>
@@ -544,6 +565,25 @@
       display: none;
       pointer-events: none;
     }
+
+    .a-dialog-allow-button {
+      background-color: red;
+    }
+
+    .a-dialog-deny-button {
+      background-color: blue;
+    }
+
+    .a-dialog-ok-button {
+      background-color: green;
+    }
+
+    /* 
+    Maybe overlaying scenes like that
+    a-scene {
+      width: 100%;
+      height: 90%;
+    } */
   </style>
 </head>
 
@@ -596,7 +636,7 @@
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
         <img id="my-image5"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
-        <a-asset-item id="bowser" response-type="arraybuffer"
+        <!-- <a-asset-item id="bowser" response-type="arraybuffer"
           src="https://cdn.glitch.com/06bd98b4-97ee-4c07-a546-fe39ca205034%2Fbowser.glb">
         </a-asset-item>
         <a-asset-item id="area1" response-type="arraybuffer"
@@ -605,17 +645,17 @@
 
         <a-asset-item id="bird" response-type="arraybuffer"
           src="https://cdn.glitch.com/1061d524-9d0f-4b25-97fd-48ebd0fce63c%2Fsceneglb.glb?1546534633849"></a-asset-item>
-      </a-assets>
-      <a-asset-item id="area2" response-type="arraybuffer"
+      </a-assets> -->
+        <!-- <a-asset-item id="area2" response-type="arraybuffer"
         src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ftcb_low_poly.glb?v=1622469315500">
-      </a-asset-item>
-      <a-asset-item id="area3" response-type="arraybuffer"
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
-      </a-asset-item>
+      </a-asset-item> -->
+        <a-asset-item id="area3" response-type="arraybuffer"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
+        </a-asset-item>
       </a-assets>
 
       <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier">
-        <a-entity position="5 150 -150" gltf-model="#bowser" scale="5 5 5"></a-entity>
+        <!-- <a-entity position="5 150 -150" gltf-model="#bowser" scale="5 5 5"></a-entity> -->
       </a-nft>
 
 
@@ -623,19 +663,18 @@
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-        <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity>
+        <!-- <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity> -->
       </a-nft>
 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kala/kala"
         smooth="true" smoothCount="20" smoothTolerance=".01" smoothThreshold="10" raycaster="objects: .clickable"
-        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="modelmarker">
 
         <!-- 
         <a-entity light="type: directional; color: #FFF; intensity: 10" position="-0.5 1 1"></a-entity> -->
 
-        <a-entity gltf-model="#area3" position="150 -50 -200" scale="290.75 290.75 290.75" class="clickable"
-          rotation="-120 30 15" gesture-handler>
+        <a-entity position="50 150 -200" objectmodel-detected>
         </a-entity>
 
 
@@ -669,10 +708,10 @@
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-        <a-entity position="50 150 -250" gltf-model="#bird" scale="0.8 0.8 0.8"
+        <!-- <a-entity position="50 150 -250" gltf-model="#bird" scale="0.8 0.8 0.8"
           animation-mixer="clip:Take 001; loop:2; timeScale: 0.5; crossFadeDuration: 1" class="clickable"
           gesture-handler>
-        </a-entity>
+        </a-entity> -->
       </a-nft>
 
 
@@ -681,17 +720,22 @@
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
         smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="10" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-        <a-entity
+        <!-- <a-entity
           gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-          position="0 0 0" scale="5 5 5" class="clickable" gesture-handler></a-entity>
+          position="0 0 0" scale="5 5 5" class="clickable" gesture-handler></a-entity> -->
       </a-nft>
 
       <a-entity camera>
         <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
           geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
-          <a-image width="0.00000012" height="0.00000006" src="#my-image" id="image-slider"></a-image>
         </a-entity>
       </a-entity>
+      <!-- <a-entity gltf-model="#area3" position="0 0 -2" scale="3 3 3" class="clickable" rotation="30 57 20"
+        gesture-handler visible="false" id="area">
+      </a-entity> -->
+
+      <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider"></a-image>
+
     </a-scene>
   </div>
   <script>
