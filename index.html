@@ -209,7 +209,7 @@
     AFRAME.registerComponent("gesture-handler", {
       schema: {
         enabled: { default: true },
-        rotationFactor: { default: 5 },
+        rotationFactor: { default: 3 },
         minScale: { default: 0.3 },
         maxScale: { default: 8 },
         positionFactor: { default: 10 }
@@ -275,10 +275,17 @@
       },
       handleRotation: function (event) {
         if (this.isVisible) {
+
           this.el.object3D.rotation.y +=
             event.detail.positionChange.x * this.data.rotationFactor;
+
+
+          // if (this.el.object3D.rotation.x < 50) {
           this.el.object3D.rotation.x +=
             event.detail.positionChange.y * this.data.rotationFactor;
+          // } else {
+          // this.el.object3D.rotation.x = 49.5
+          //          }
         }
       },
       handlePosition: function (event) {
@@ -398,20 +405,42 @@
 
       }
     });
+
     AFRAME.registerComponent('objectmodel-detected', {
       schema: {
 
       },
       init: function () {
+        this.isVisible = false;
         let model = document.getElementById("area")
+        let plane = document.getElementById("plane")
         let modelMarker = document.getElementById("modelmarker")
         // cameraPosition = camera.object3D.position;
-        let modelMarkerPosition = modelMarker.object3D.position;
-        modelMarker.addEventListener("markerFound", e => {
-          model.setAttribute('visible', true);
-        })
-        modelMarker.addEventListener("markerLost", e => {
+        // const camera = document.querySelector("[camera]");
 
+        modelMarker.addEventListener("markerFound", e => {
+          this.isVisible = true;
+          // let cameraPosition = camera.object3D.position;
+          // let modelMarkerPosition = modelMarker.object3D.position;
+          model.setAttribute('visible', true);
+          plane.setAttribute('visible', true);
+
+          //   setInterval(() => {
+          //     if (this.isVisible) {
+          //       let distance = cameraPosition.distanceTo(modelMarkerPosition);
+          //       model.setAttribute("scale", `${700 / distance} ${700 / distance}  ${700 / distance} `)
+          //       // model.object3D.rotation.z = Math.tan((camera.object3D.position.x - modelMarker.object3D.position.x) / (camera.object3D.position.y - modelMarker.object3D.position.y))
+          //       // model.object3D.rotation.x = Math.tan((camera.object3D.position.y - modelMarker.object3D.position.y) / (camera.object3D.position.z - modelMarker.object3D.position.z))
+          //       // model.object3D.rotation.y = Math.tan((camera.object3D.position.z - modelMarker.object3D.position.z) / (camera.object3D.position.x - modelMarker.object3D.position.x))
+
+          //     }
+          //   }, 100)
+        })
+
+        modelMarker.addEventListener("markerLost", e => {
+          this.isVisible = false;
+          model.setAttribute('visible', false);
+          plane.setAttribute('visible', false);
         })
       },
       tick: function (time, deltaTime) {
@@ -567,15 +596,15 @@
     }
 
     .a-dialog-allow-button {
-      background-color: red;
+      background-color: lightgreen;
     }
 
     .a-dialog-deny-button {
-      background-color: blue;
+      background-color: powderblue;
     }
 
     .a-dialog-ok-button {
-      background-color: green;
+      background-color: lightgreen;
     }
 
     /* 
@@ -729,12 +758,18 @@
         <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
           geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
         </a-entity>
-      </a-entity>
-      <!-- <a-entity gltf-model="#area3" position="0 0 -2" scale="3 3 3" class="clickable" rotation="30 57 20"
-        gesture-handler visible="false" id="area">
-      </a-entity> -->
 
-      <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider"></a-image>
+
+        <a-entity visible="false" id="area" position="0 0 -1" rotation="30 57 20"
+          gesture-handler="minScale:0.8; maxScale:1.5;" gltf-model="#area3" class="clickable" scale="2 2 2">
+        </a-entity>
+        <a-plane width="0.4" height="0.4" opacity="0.8" position="0 0 -1" id="plane" rotation="0 0 0" class="clickable"
+          gesture-handler="minScale:0.8; maxScale:1.5;" color="white" visible="false">
+
+        </a-plane>
+
+
+        <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider"></a-image>
 
     </a-scene>
   </div>
