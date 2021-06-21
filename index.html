@@ -317,24 +317,43 @@
 
   <!-- Activate imageslider with dynamic properties -->
   <script>
-
     let slides;
-
+    let slides2 = ["#dreizehn--1", "#dreizehn--2", "#dreizehn--3", "#dreizehn--4", "#dreizehn--5"]
+    let slides8 = ["#achtzehn--1", "#achtzehn--2", "#achtzehn--3", "#achtzehn--4", "#achtzehn--5", "#achtzehn--6"]
+    let slides5 = ['#fünf--1', '#fünf--2', '#fünf--3', '#fünf--4', '#fünf--5']
+    let slides3 = ["#zehn--1", "#zehn--2", "#zehn--3", "#zehn--4", "#zehn--5"]
     AFRAME.registerComponent("image-slider-activate", {
       schema: {
         enabled: { default: true },
         images: {
           default: [{ img: '#my-image5', width: 120, height: 80, headline: 'peace' }, { img: '#my-image3', width: 120, height: 80, headline: 'was geht' }]
         },
+        slides: {
+          default: "slides2"
+        },
         markerId: { default: "yo" }
       },
 
       init: function () {
+
         this.index = 0;
         this.isVisible = false;
-        slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
+        dataSlides = this.data.slides;
+        switch (dataSlides) {
+          case "slides2":
+            slides = slides2
+            break;
+          case "slides3":
+            slides = slides3
+            break;
+          default:
+            slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
+            break;
+        }
+
 
         let images = this.data.images;
+        slider.setAttribute("src", slides[0])
         let img__index = slides.indexOf(slider.getAttribute("src"));
         let markerId = this.data.markerId;
         let widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11)) ?? 120
@@ -363,16 +382,32 @@
           cameraPosition = camera.object3D.position;
           markerPosition = marker.object3D.position;
           document.querySelector("head").appendChild(disableZoom)
+          switch (dataSlides) {
+            case "slides2":
+              slides = slides2
+              break;
+            case "slides3":
+              slides = slides3
+              break;
+            case "slides8":
+              slides = slides8
+              break;
 
+            default:
+              slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
+              break;
+          }
 
           setInterval(() => {
+
             distance = cameraPosition.distanceTo(markerPosition);
             if (this.isVisible) {
               element.setAttribute('visible', true);
-              img__text.innerHTML = images[img__index * 4 + 3].toString().substring(9, 25).replace("}", "").replace("]", "").replace("'", "").replace("'", "")
               img__index = slides.indexOf(slider.getAttribute("src"));
-              widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11)) ?? 120
-              heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12)) ?? 100
+              img__text.innerHTML = images[img__index * 4 + 3].toString().substring(9, 25).replace("}", "").replace("]", "").replace("'", "").replace("'", "")
+
+              widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11))
+              heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12))
               let slide__height = (heightDim / distance);
               let slide__width = (widthDim / distance);
               // limit size
@@ -383,7 +418,9 @@
               }
 
             } else {
-              // setAttribute('visible', false); might beetter
+              // setAttribute('visible', false); might better
+              slides = []
+
               element.setAttribute('visible', false);
 
             }
@@ -397,7 +434,7 @@
 
           buttons.classList.add("hidden");
           document.querySelector("head").removeChild(disableZoom)
-
+          slides = []
           element.setAttribute('visible', false);
         });
       },
@@ -415,26 +452,14 @@
         let model = document.getElementById("area")
         let plane = document.getElementById("plane")
         let modelMarker = document.getElementById("modelmarker")
-        // cameraPosition = camera.object3D.position;
-        // const camera = document.querySelector("[camera]");
 
         modelMarker.addEventListener("markerFound", e => {
           this.isVisible = true;
-          // let cameraPosition = camera.object3D.position;
-          // let modelMarkerPosition = modelMarker.object3D.position;
+
           model.setAttribute('visible', true);
           plane.setAttribute('visible', true);
 
-          //   setInterval(() => {
-          //     if (this.isVisible) {
-          //       let distance = cameraPosition.distanceTo(modelMarkerPosition);
-          //       model.setAttribute("scale", `${700 / distance} ${700 / distance}  ${700 / distance} `)
-          //       // model.object3D.rotation.z = Math.tan((camera.object3D.position.x - modelMarker.object3D.position.x) / (camera.object3D.position.y - modelMarker.object3D.position.y))
-          //       // model.object3D.rotation.x = Math.tan((camera.object3D.position.y - modelMarker.object3D.position.y) / (camera.object3D.position.z - modelMarker.object3D.position.z))
-          //       // model.object3D.rotation.y = Math.tan((camera.object3D.position.z - modelMarker.object3D.position.z) / (camera.object3D.position.x - modelMarker.object3D.position.x))
 
-          //     }
-          //   }, 100)
         })
 
         modelMarker.addEventListener("markerLost", e => {
@@ -447,39 +472,7 @@
 
       }
     })
-    // AFRAME.registerComponent('clickYo', {
-    //   schema: {
 
-    //   },
-    //   init: function () {
-    //     this.el.addEventListener("click", () => {
-    //       window.alert("yo Mama")
-    //       this.el.setAttribute("rotation", "0 0 0");
-    //     })
-    //   },
-
-    //   events: {
-    //     click: function (evt) {
-    //       window.alert("yo Mama")
-    //       this.el.setAttribute("rotation", "0 0 0");
-    //     }
-    //   }
-    // });
-    // AFRAME.registerComponent('modify-materials', {
-    //   init: function () {
-    //     // Wait for model to load.
-    //     this.el.addEventListener('model-loaded', () => {
-    //       // Grab the mesh / scene.
-    //       const obj = this.el.getObject3D('mesh');
-    //       // Go over the submeshes and modify materials we want.
-    //       obj.traverse(node => {
-    //         if (node.name.indexOf('ship') !== -1) {
-    //           node.material.color.set('red');
-    //         }
-    //       });
-    //     });
-    //   }
-    // });
   </script>
 
   <style>
@@ -489,8 +482,6 @@
       margin: 0;
       padding: 0;
     }
-
-
 
     div.wrap {
       height: 100%;
@@ -545,7 +536,7 @@
       justify-content: space-between;
       position: relative;
       bottom: 5.5%;
-      left: 2.05%
+      left: 2.05%;
     }
 
 
@@ -665,34 +656,83 @@
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
         <img id="my-image5"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
-        <!-- <a-asset-item id="bowser" response-type="arraybuffer"
-          src="https://cdn.glitch.com/06bd98b4-97ee-4c07-a546-fe39ca205034%2Fbowser.glb">
-        </a-asset-item>
-        <a-asset-item id="area1" response-type="arraybuffer"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fblockmodell_blender.glb?v=1620728303190">
-        </a-asset-item>
+        <img id="vier__1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_1.jpg?v=1624190913370" />
+        <img id="vier__2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_2.jpg?v=1624190764823" />
+        <img id="vier__3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_3.jpg?v=1624190764000" />
+        <img id="vier__4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_4.jpg?v=1624190764604" />
+        <img id="dreizehn--1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_.1jpg.jpg?v=1624191646934" />
+        <img id="dreizehn--2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_2.jpg?v=1624191646811" />
+        <img id="dreizehn--3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_3.jpg?v=1624191647306" />
+        <img id="dreizehn--4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_4.jpg?v=1624191647325" />
+        <img id="dreizehn--5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_5.jpg?v=1624191647259" />
+        <img id="zehn--1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_1.jpg?v=1624191905429" />
+        <img id="zehn--2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_2.jpg?v=1624191903402" />
+        <img id="zehn--3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_3.jpg?v=1624191903943" />
+        <img id="zehn--4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_4.jpg?v=1624191904505" />
+        <img id="zehn--5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_5.jpg?v=1624191905402" />
+        <img id="achtzehn--1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_1.jpg?v=1624192189503" />
+        <img id="achtzehn--2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_2.jpg?v=1624192190774" />
+        <img id="achtzehn--3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_3.jpg?v=1624192190697" />
+        <img id="achtzehn--4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_4.jpg?v=1624192191123" />
+        <img id="achtzehn--5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_5.jpg?v=1624192190953" />
+        <img id="achtzehn--6"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_6.jpg?v=1624192190564" />
+        <img id="fünf--1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_.jpg?v=1624192511300" />
+        <img id="fünf--2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_2.jpg?v=1624192512943" />
+        <img id="fünf--3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_3.jpg?v=1624192513160" />
+        <img id="fünf--4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_4.jpg?v=1624192513145" />
+        <img id="fünf--5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_5.jpg?v=1624192513558" />
 
-        <a-asset-item id="bird" response-type="arraybuffer"
-          src="https://cdn.glitch.com/1061d524-9d0f-4b25-97fd-48ebd0fce63c%2Fsceneglb.glb?1546534633849"></a-asset-item>
-      </a-assets> -->
-        <!-- <a-asset-item id="area2" response-type="arraybuffer"
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ftcb_low_poly.glb?v=1622469315500">
-      </a-asset-item> -->
         <a-asset-item id="area3" response-type="arraybuffer"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
         </a-asset-item>
+
       </a-assets>
 
-      <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier">
-        <!-- <a-entity position="5 150 -150" gltf-model="#bowser" scale="5 5 5"></a-entity> -->
+
+      <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" id="vier__marker"
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
+        <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
+          <a-entity class="clickable"
+            image-slider-activate="markerId: vier__marker; images: [{img: '#vier__1, width: 152, height: 114, headline: 'nummer 1'}, {img: '#vier__2, width: 152, height: 114, headline: 'yo'}, {img: '#vier__3, width: 152, height: 114, headline: 'was geht'},  {img: '#vier__4, width: 152, height: 114, headline: 'was geeeeht'}]">
+          </a-entity>
+        </a-entity>
       </a-nft>
 
 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
-        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-        <!-- <a-entity position="0 0 -50" gltf-model="#area1" scale="1 1 1" class="clickable" gesture-handler></a-entity> -->
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="fünf__marker">
+        <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
+          <a-entity class="clickable"
+            image-slider-activate="markerId: fünf__marker; slides: slides5; images: [{img: '#fünf__1, width: 120, height: 80, headline: 'test'}, {img: '#fünf__2, width: 120, height: 80, headline: 'yo'}, {img: '#fünf__3, width: 80, height: 120, headline: 'was geht'},  {img: '#fünf__4, width: 80, height: 120, headline: 'was geeeeht'},  {img: '#fünf__5, width: 80, height: 120, headline: 'lol'}]">
+          </a-entity>
+        </a-entity>
       </a-nft>
 
       <a-nft type="nft"
@@ -716,10 +756,11 @@
         id="yo" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
           <a-entity class="clickable"
-            image-slider-activate="markerId: yo; images: [{img: '#my-image, width: 120, height: 120, headline: 'test'}, {img: '#my-image2, width: 120, height: 80, headline: 'yo'}, {img: '#my-image3, width: 100, height: 60, headline: 'was geht'},  {img: '#my-image4, width: 120, height: 80, headline: 'was geeeeht'},  {img: '#my-image5, width: 120, height: 80, headline: 'lol'}]">
+            image-slider-activate="markerId: yo; slides: slides2;  images: [{img: '#my-image', width: 80, height: 120, headline: 'waschbecken'}, {img: '#my-image2', width: 80, height: 120, headline: 'yo'}, {img: '#my-image3', width: 80, height: 120, headline: 'was geht'},  {img: '#my-image4', width: 80, height: 120, headline: 'was geeeeht'},  {img: '#my-image5', width: 80, height: 120, headline: 'lol'}]">
           </a-entity>
         </a-entity>
       </a-nft>
+
 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
@@ -727,20 +768,21 @@
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
 
           <a-entity class="clickable"
-            image-slider-activate="markerId: banana; images: [{img: '#my-image, width: 80, height: 120, headline: 'test'}, {img: '#my-image2, width: 120, height: 80, headline: 'yo'}, {img: '#my-image3, width: 100, height: 60, headline: 'was geht'},  {img: '#my-image4, width: 120, height: 80, headline: 'was geeeeht'},  {img: '#my-image5, width: 120, height: 80, headline: 'lol'}]">
+            image-slider-activate="markerId: banana; slides: slides3; images: [{img: '#dreizehn__1', width: 80, height: 120, headline: 'toilet'}, {img: '#dreizehn__2', width: 120, height: 80, headline: 'toilets'}, {img: '#dreizehn__3', width: 120, height: 80, headline: 'was geht'},  {img: '#dreizehn__4', width: 120, height: 80, headline: 'was geeeeht'},  {img: '#dreizehn__5', width: 120, height: 80, headline: 'lol'}]">
           </a-entity>
-
         </a-entity>
       </a-nft>
 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
-        emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-        <!-- <a-entity position="50 150 -250" gltf-model="#bird" scale="0.8 0.8 0.8"
-          animation-mixer="clip:Take 001; loop:2; timeScale: 0.5; crossFadeDuration: 1" class="clickable"
-          gesture-handler>
-        </a-entity> -->
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="achtzehn__marker">
+        <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
+
+          <a-entity class="clickable"
+            image-slider-activate="markerId: achtzehn__marker; slides: slides8; images: [{img: '#achtzehn__1, width: 120, height: 80, headline: 'test'}, {img: '#achtzehn__2, width: 120, height: 80, headline: 'yo'}, {img: '#achtzehn__3, width: 120, height: 80, headline: 'was geht'},  {img: '#achtzehn__4, width: 80, height: 120, headline: 'was geeeeht'},  {img: '#achtzehn__5, width: 120, height: 80, headline: 'lol'}, {img: '#achtzehn__6, width: 120, height: 80, headline: 'lol'}]">
+          </a-entity>
+        </a-entity>
       </a-nft>
 
 
@@ -749,10 +791,9 @@
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
         smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="10" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
-        <!-- <a-entity
-          gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-          position="0 0 0" scale="5 5 5" class="clickable" gesture-handler></a-entity> -->
+
       </a-nft>
+
 
       <a-entity camera>
         <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
@@ -769,7 +810,10 @@
         </a-plane>
 
 
-        <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider"></a-image>
+        <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider">
+        </a-image>
+
+        </a-image>
 
     </a-scene>
   </div>
