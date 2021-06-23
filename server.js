@@ -19,15 +19,18 @@ if (process.env.NODE_ENV === "production") {
 
   app.listen(PORT, () => console.log(`Up and Running on port ${PORT}`));
 } else {
+
   const http = require('http');
   const https = require('https');
   const privateKey = fs.readFileSync('certificate/server.key', 'utf8');
   const certificate = fs.readFileSync('certificate/server.cert', 'utf8');
+  const credentials = { key: privateKey, cert: certificate };
+
   const httpServer = http.createServer(app);
   const httpsServer = https.createServer(credentials, app);
-  const credentials = { key: privateKey, cert: certificate };
-  httpServer.listen(8080, '192.168.0.129');
-  httpsServer.listen(8443, '192.168.0.129');
+
+  httpServer.listen(8080, '172.16.1.21');
+  httpsServer.listen(8443, '172.16.1.21');
 
 }
 

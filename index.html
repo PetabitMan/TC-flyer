@@ -209,7 +209,7 @@
     AFRAME.registerComponent("gesture-handler", {
       schema: {
         enabled: { default: true },
-        rotationFactor: { default: 3 },
+        rotationFactor: { default: 2 },
         minScale: { default: 0.3 },
         maxScale: { default: 8 },
         positionFactor: { default: 10 }
@@ -317,11 +317,13 @@
 
   <!-- Activate imageslider with dynamic properties -->
   <script>
-    let slides;
-    let slides2 = ["#dreizehn--1", "#dreizehn--2", "#dreizehn--3", "#dreizehn--4", "#dreizehn--5"]
-    let slides8 = ["#achtzehn--1", "#achtzehn--2", "#achtzehn--3", "#achtzehn--4", "#achtzehn--5", "#achtzehn--6"]
-    let slides5 = ['#fünf--1', '#fünf--2', '#fünf--3', '#fünf--4', '#fünf--5']
-    let slides3 = ["#zehn--1", "#zehn--2", "#zehn--3", "#zehn--4", "#zehn--5"]
+    var slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
+    const slides2 = ["#dreizehn--1", "#dreizehn--2", "#dreizehn--3", "#dreizehn--4", "#dreizehn--5"]
+    const slides8 = ["#achtzehn--1", "#achtzehn--2", "#achtzehn--3", "#achtzehn--4", "#achtzehn--5", "#achtzehn--6"]
+    const slides5 = ['#fünf--1', '#fünf--2', '#fünf--3', '#fünf--4', '#fünf--5']
+    const slides3 = ["#zehn--1", "#zehn--2", "#zehn--3", "#zehn--4", "#zehn--5"]
+    const slides4 = ["#vier--1", "#vier--2", "#vier--3", "#vier--4"]
+
     AFRAME.registerComponent("image-slider-activate", {
       schema: {
         enabled: { default: true },
@@ -338,19 +340,7 @@
 
         this.index = 0;
         this.isVisible = false;
-        dataSlides = this.data.slides;
-        switch (dataSlides) {
-          case "slides2":
-            slides = slides2
-            break;
-          case "slides3":
-            slides = slides3
-            break;
-          default:
-            slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
-            break;
-        }
-
+        let dataSlides = this.data.slides;
 
         let images = this.data.images;
         slider.setAttribute("src", slides[0])
@@ -367,7 +357,7 @@
         let img__text = document.getElementById("img__text")
 
 
-        disableZoom = document.createElement("meta")
+        let disableZoom = document.createElement("meta")
         disableZoom.setAttribute("name", "viewport")
         disableZoom.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no")
 
@@ -379,8 +369,8 @@
 
           buttons.classList.remove("hidden");
           // inc__button.dispatchEvent(click__event)
-          cameraPosition = camera.object3D.position;
-          markerPosition = marker.object3D.position;
+          let cameraPosition = camera.object3D.position;
+          let markerPosition = marker.object3D.position;
           document.querySelector("head").appendChild(disableZoom)
           switch (dataSlides) {
             case "slides2":
@@ -392,7 +382,6 @@
             case "slides8":
               slides = slides8
               break;
-
             default:
               slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
               break;
@@ -400,7 +389,7 @@
 
           setInterval(() => {
 
-            distance = cameraPosition.distanceTo(markerPosition);
+            let distance = cameraPosition.distanceTo(markerPosition);
             if (this.isVisible) {
               element.setAttribute('visible', true);
               img__index = slides.indexOf(slider.getAttribute("src"));
@@ -419,7 +408,7 @@
 
             } else {
               // setAttribute('visible', false); might better
-              slides = []
+
 
               element.setAttribute('visible', false);
 
@@ -434,7 +423,7 @@
 
           buttons.classList.add("hidden");
           document.querySelector("head").removeChild(disableZoom)
-          slides = []
+
           element.setAttribute('visible', false);
         });
       },
@@ -442,6 +431,7 @@
 
       }
     });
+
 
     AFRAME.registerComponent('objectmodel-detected', {
       schema: {
@@ -656,13 +646,13 @@
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
         <img id="my-image5"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
-        <img id="vier__1"
+        <img id="vier--1"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_1.jpg?v=1624190913370" />
-        <img id="vier__2"
+        <img id="vier--2"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_2.jpg?v=1624190764823" />
-        <img id="vier__3"
+        <img id="vier--3"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_3.jpg?v=1624190764000" />
-        <img id="vier__4"
+        <img id="vier--4"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_4.jpg?v=1624190764604" />
         <img id="dreizehn--1"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_.1jpg.jpg?v=1624191646934" />
@@ -718,7 +708,7 @@
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
           <a-entity class="clickable"
-            image-slider-activate="markerId: vier__marker; images: [{img: '#vier__1, width: 152, height: 114, headline: 'nummer 1'}, {img: '#vier__2, width: 152, height: 114, headline: 'yo'}, {img: '#vier__3, width: 152, height: 114, headline: 'was geht'},  {img: '#vier__4, width: 152, height: 114, headline: 'was geeeeht'}]">
+            image-slider-activate="markerId: vier__marker; images: [{img: '#vier__1, width: 152, height: 114, headline: 'gebäude1'}, {img: '#vier__2, width: 152, height: 114, headline: 'gebäude2'}, {img: '#vier__3, width: 152, height: 114, headline: 'gebäude3'},  {img: '#vier__4, width: 152, height: 114, headline: 'gebäude4'}]">
           </a-entity>
         </a-entity>
       </a-nft>
@@ -730,7 +720,7 @@
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="fünf__marker">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
           <a-entity class="clickable"
-            image-slider-activate="markerId: fünf__marker; slides: slides5; images: [{img: '#fünf__1, width: 120, height: 80, headline: 'test'}, {img: '#fünf__2, width: 120, height: 80, headline: 'yo'}, {img: '#fünf__3, width: 80, height: 120, headline: 'was geht'},  {img: '#fünf__4, width: 80, height: 120, headline: 'was geeeeht'},  {img: '#fünf__5, width: 80, height: 120, headline: 'lol'}]">
+            image-slider-activate="markerId: fünf__marker; slides: slides5; images: [{img: '#fünf__1, width: 120, height: 80, headline: 'lobby'}, {img: '#fünf__2, width: 120, height: 80, headline: 'lobby2'}, {img: '#fünf__3, width: 80, height: 120, headline: 'lobby3'},  {img: '#fünf__4, width: 80, height: 120, headline: 'lobby4'},  {img: '#fünf__5, width: 80, height: 120, headline: 'lobby5'}]">
           </a-entity>
         </a-entity>
       </a-nft>
@@ -756,7 +746,7 @@
         id="yo" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
           <a-entity class="clickable"
-            image-slider-activate="markerId: yo; slides: slides2;  images: [{img: '#my-image', width: 80, height: 120, headline: 'waschbecken'}, {img: '#my-image2', width: 80, height: 120, headline: 'yo'}, {img: '#my-image3', width: 80, height: 120, headline: 'was geht'},  {img: '#my-image4', width: 80, height: 120, headline: 'was geeeeht'},  {img: '#my-image5', width: 80, height: 120, headline: 'lol'}]">
+            image-slider-activate="markerId: yo; slides: slides2;  images: [{img: '#my-image', width: 80, height: 120, headline: 'waschbecken'}, {img: '#my-image2', width: 80, height: 120, headline: 'waschbecken2'}, {img: '#my-image3', width: 80, height: 120, headline: 'waschbecken3'},  {img: '#my-image4', width: 80, height: 120, headline: 'waschbecken4'},  {img: '#my-image5', width: 80, height: 120, headline: 'waschbecken5'}]">
           </a-entity>
         </a-entity>
       </a-nft>
@@ -768,7 +758,7 @@
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
 
           <a-entity class="clickable"
-            image-slider-activate="markerId: banana; slides: slides3; images: [{img: '#dreizehn__1', width: 80, height: 120, headline: 'toilet'}, {img: '#dreizehn__2', width: 120, height: 80, headline: 'toilets'}, {img: '#dreizehn__3', width: 120, height: 80, headline: 'was geht'},  {img: '#dreizehn__4', width: 120, height: 80, headline: 'was geeeeht'},  {img: '#dreizehn__5', width: 120, height: 80, headline: 'lol'}]">
+            image-slider-activate="markerId: banana; slides: slides3; images: [{img: '#dreizehn__1', width: 80, height: 120, headline: 'bäume1'}, {img: '#dreizehn__2', width: 120, height: 80, headline: 'bäume2'}, {img: '#dreizehn__3', width: 120, height: 80, headline: 'bäume3'},  {img: '#dreizehn__4', width: 120, height: 80, headline: 'bäume4'},  {img: '#dreizehn__5', width: 120, height: 80, headline: 'bäume5'}]">
           </a-entity>
         </a-entity>
       </a-nft>
@@ -780,7 +770,7 @@
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
 
           <a-entity class="clickable"
-            image-slider-activate="markerId: achtzehn__marker; slides: slides8; images: [{img: '#achtzehn__1, width: 120, height: 80, headline: 'test'}, {img: '#achtzehn__2, width: 120, height: 80, headline: 'yo'}, {img: '#achtzehn__3, width: 120, height: 80, headline: 'was geht'},  {img: '#achtzehn__4, width: 80, height: 120, headline: 'was geeeeht'},  {img: '#achtzehn__5, width: 120, height: 80, headline: 'lol'}, {img: '#achtzehn__6, width: 120, height: 80, headline: 'lol'}]">
+            image-slider-activate="markerId: achtzehn__marker; slides: slides8; images: [{img: '#achtzehn__1, width: 120, height: 80, headline: 'kantine1'}, {img: '#achtzehn__2, width: 120, height: 80, headline: 'kantine2'}, {img: '#achtzehn__3, width: 120, height: 80, headline: 'kantine3'},  {img: '#achtzehn__4, width: 80, height: 120, headline: 'kantine4'},  {img: '#achtzehn__5, width: 120, height: 80, headline: 'kantine5'}, {img: '#achtzehn__6, width: 120, height: 80, headline: 'kantine6'}]">
           </a-entity>
         </a-entity>
       </a-nft>
@@ -800,12 +790,12 @@
           geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
         </a-entity>
 
-
-        <a-entity visible="false" id="area" position="0 0 -1" rotation="30 57 20"
+        <!-- 30 57 20 -->
+        <a-entity visible="false" id="area" position="0 0 -1" rotation="30 57 0"
           gesture-handler="minScale:0.8; maxScale:1.5;" gltf-model="#area3" class="clickable" scale="2 2 2">
         </a-entity>
-        <a-plane width="0.4" height="0.4" opacity="0.8" position="0 0 -1" id="plane" rotation="0 0 0" class="clickable"
-          gesture-handler="minScale:0.8; maxScale:1.5;" color="white" visible="false">
+        <a-plane width="0.5" height="0.5" opacity="0.9" position="0 0 -1" id="plane" rotation="-60 57 0"
+          class="clickable" gesture-handler="minScale:0.8; maxScale:1.5;" color="white" visible="false">
 
         </a-plane>
 
@@ -819,13 +809,18 @@
   </div>
   <script>
 
-    let next__button = document.getElementById("btn__nextimage");
-    let back__button = document.getElementById("btn__lastimage");
-    let slider = document.getElementById("image-slider");
+    const next__button = document.getElementById("btn__nextimage");
+    const back__button = document.getElementById("btn__lastimage");
+    const slider = document.getElementById("image-slider");
 
 
     next__button.addEventListener("click", () => {
+
       let slideindex = slides.indexOf(slider.getAttribute("src"));
+      // If it switches to another slider
+      if (!slideindex) {
+        slideindex = 0
+      }
       if (slides.length - 1 === slideindex) {
         slider.setAttribute("src", slides[0]);
       } else {
@@ -835,6 +830,10 @@
     });
     back__button.addEventListener("click", () => {
       let slideindex = slides.indexOf(slider.getAttribute("src"));
+      // If it switches to another slider
+      if (!slideindex) {
+        slideindex = 0
+      }
       if (slideindex === 0) {
         slider.setAttribute("src", slides[slides.length - 1]);
       } else {
