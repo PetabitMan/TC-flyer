@@ -212,7 +212,10 @@
         rotationFactor: { default: 2 },
         minScale: { default: 0.3 },
         maxScale: { default: 8 },
-        positionFactor: { default: 10 }
+        positionFactor: { default: 10 },
+        name: {
+          dafault: "model"
+        }
       },
 
       init: function () {
@@ -278,14 +281,23 @@
 
           this.el.object3D.rotation.y +=
             event.detail.positionChange.x * this.data.rotationFactor;
-
-
-          // if (this.el.object3D.rotation.x < 50) {
           this.el.object3D.rotation.x +=
             event.detail.positionChange.y * this.data.rotationFactor;
-          // } else {
-          // this.el.object3D.rotation.x = 49.5
-          //          }
+          // if (this.el.object3D.rotation.x > 0 && this.el.object3D < 90 && this.data.name === "model") {
+          //   this.el.object3D.rotation.x +=
+          //     event.detail.positionChange.y * this.data.rotationFactor;
+          // } else if (this.el.object3D.rotation.x > -90 && this.el.object3D < 0 && this.data.name === "plane") {
+          //   this.el.object3D.rotation.x +=
+          //     event.detail.positionChange.y * this.data.rotationFactor;
+          // } else if (this.data.name = "plane" && this.data.rotation < -90) {
+          //   this.el.object3D.rotation.x = -90
+          // } else if (this.data.name = "plane" && this.data.rotation > 0) {
+          //   this.el.object3D.rotation.x = 0
+          // } else if (this.data.name = "model" && this.data.rotation < 0) {
+          //   this.el.object3D.rotation.x = 0
+          // } else if (this.data.name = "model" && this.data.rotation > 90) {
+          //   this.el.object3D.rotation.x = 90
+          // }
         }
       },
       handlePosition: function (event) {
@@ -382,6 +394,12 @@
               break;
             case "slides8":
               slides = slides8
+              break;
+            case "slides5":
+              slides = slides5
+              break;
+            case "slides4":
+              slides = slides4
               break;
             default:
               slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
@@ -713,7 +731,7 @@
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
           <a-entity class="clickable"
-            image-slider-activate="markerId: vier__marker; images: [{img: '#vier__1, width: 152, height: 114, headline: 'gebäude1'}, {img: '#vier__2, width: 152, height: 114, headline: 'gebäude2'}, {img: '#vier__3, width: 152, height: 114, headline: 'gebäude3'},  {img: '#vier__4, width: 152, height: 114, headline: 'gebäude4'}]">
+            image-slider-activate="markerId: vier__marker; slides: slides4; images: [{img: '#vier__1, width: 152, height: 114, headline: 'gebäude1'}, {img: '#vier__2, width: 152, height: 114, headline: 'gebäude2'}, {img: '#vier__3, width: 152, height: 114, headline: 'gebäude3'},  {img: '#vier__4, width: 152, height: 114, headline: 'gebäude4'}]">
           </a-entity>
         </a-entity>
       </a-nft>
@@ -796,13 +814,16 @@
         </a-entity>
 
         <!-- 30 57 20 -->
-        <a-entity visible="false" id="area" position="0 0 -1" rotation="30 57 0"
-          gesture-handler="minScale:0.8; maxScale:1.5;" gltf-model="#area3" class="clickable" scale="2 2 2">
-        </a-entity>
-        <a-plane width="0.5" height="0.5" opacity="0.9" position="0 0 -1" id="plane" rotation="-60 57 0"
-          class="clickable" gesture-handler="minScale:0.8; maxScale:1.5;" color="white" visible="false">
+        <a-entity position="0 0 0" rotation="0 0 20">
+          <a-entity gesture-handler="minScale:0.7; maxScale:1.5; name:model" class="clickable" visible="false" id="area"
+            position="0 0 -1" rotation="30 57 0" gltf-model="#area3" scale="2 2 2">
+          </a-entity>
+          <a-plane gesture-handler="minScale:0.7; maxScale:1.5; name:plane;" class="clickable" width="0.5" height="0.5"
+            opacity="0.9" position="0 0 -1" id="plane" rotation="-60 57 0" color="white" visible="false">
 
-        </a-plane>
+          </a-plane>
+        </a-entity>
+
 
 
         <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider">
@@ -846,8 +867,6 @@
       }
 
     });
-
-
   </script>
 
 </body>
