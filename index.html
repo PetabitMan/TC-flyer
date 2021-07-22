@@ -543,21 +543,20 @@
     AFRAME.registerComponent('videohandlerFull', {
       init: function () {
         let markerFullVid = document.querySelector("#vidFullMarker")
-        let camera = document.querySelector("[camera]");
+
         this.isVisible = false
         this.vid = document.querySelector("#videoFull");
 
         markerFullVid.addEventListener('markerFound', function () {
           this.isVisible = true
-          let cameraPosition = camera.object3D.position;
-          let markerPosition = markerFullVid.object3D.position;
+
           document.querySelector("head").appendChild(disableZoom)
           this.vid.classList.remove("hidden")
           this.vid.play();
 
         }.bind(this));
 
-        markerVid.addEventListener('markerLost', function () {
+        markerFullVid.addEventListener('markerLost', function () {
           this.isVisible = false
           this.vid.classList.add("hidden")
           this.vid.pause();
