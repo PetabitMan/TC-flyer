@@ -28,11 +28,12 @@ if (process.env.NODE_ENV === "production") {
   const httpServer = http.createServer(app);
   const httpsServer = https.createServer(credentials, app);
   //short cuts wlan
-  // httpServer.listen(8080, '192.168.0.229');
-  // httpsServer.listen(8443, '192.168.0.229');
+  httpServer.listen(8080, '192.168.0.229');
+  httpsServer.listen(8443, '192.168.0.229');
 
-  httpServer.listen(8080, '172.20.10.2');
-  httpsServer.listen(8443, '172.20.10.2');
+  //my phone hotspot
+  // httpServer.listen(8080, '172.20.10.2');
+  // httpsServer.listen(8443, '172.20.10.2');
 
 }
 
