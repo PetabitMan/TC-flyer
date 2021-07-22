@@ -3,7 +3,7 @@
 
 <head>
   <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
-
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
   <!-- Ar.js for nft markers  -->
   <script
@@ -335,7 +335,9 @@
     const slides5 = ['#fünf--1', '#fünf--2', '#fünf--3', '#fünf--4', '#fünf--5']
     const slides3 = ["#zehn--1", "#zehn--2", "#zehn--3", "#zehn--4", "#zehn--5"]
     const slides4 = ["#vier--1", "#vier--2", "#vier--3", "#vier--4"]
-
+    let disableZoom = document.createElement("meta")
+    disableZoom.setAttribute("name", "viewport")
+    disableZoom.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no")
     AFRAME.registerComponent("image-slider-activate", {
       schema: {
         enabled: { default: true },
@@ -360,7 +362,7 @@
         let markerId = this.data.markerId;
         let widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11)) ?? 120
 
-        const camera = document.querySelector("[camera]");
+        let camera = document.querySelector("[camera]");
         let heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12)) ?? 100
 
         let buttons = document.getElementById("buttons");
@@ -369,9 +371,7 @@
         let img__text = document.getElementById("img__text")
 
 
-        let disableZoom = document.createElement("meta")
-        disableZoom.setAttribute("name", "viewport")
-        disableZoom.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no")
+
 
 
         const click__event = new MouseEvent("click", { view: window, bubbles: true, cancelable: true });
@@ -409,8 +409,9 @@
 
           setInterval(() => {
 
-            let distance = cameraPosition.distanceTo(markerPosition);
+
             if (this.isVisible) {
+              let distance = cameraPosition.distanceTo(markerPosition);
               element.setAttribute('visible', true);
               img__index = slides.indexOf(slider.getAttribute("src"));
               img__text.innerHTML = images[img__index * 4 + 3].toString().substring(9, 25).replace("}", "").replace("]", "").replace("'", "").replace("'", "")
@@ -433,8 +434,9 @@
               element.setAttribute('visible', false);
 
             }
-
-          }, 100)
+            //maye experiment with interval number
+            //should update faster but 
+          }, 20)
 
         });
 
@@ -483,6 +485,87 @@
       }
     })
 
+
+    AFRAME.registerComponent('videohandler', {
+      init: function () {
+        let markerVid = document.querySelector("#vidMarker")
+        let camera = document.querySelector("[camera]");
+        this.isVisible = false
+        this.vid = document.querySelector("#video");
+
+        markerVid.addEventListener('markerFound', function () {
+          this.isVisible = true
+          let cameraPosition = camera.object3D.position;
+          let markerPosition = markerVid.object3D.position;
+          document.querySelector("head").appendChild(disableZoom)
+          this.vid.classList.remove("hidden")
+          this.vid.play();
+          setInterval(() => {
+
+            if (this.isVisible) {
+              let distance = cameraPosition.distanceTo(markerPosition);
+
+
+
+
+
+              let vid__width = (80000 * 2 / distance);
+
+
+              Math.floor(vid__width)
+              this.vid.style.width = `${vid__width}px`
+
+
+
+
+            } else {
+              // setAttribute('visible', false); might better
+
+
+              this.vid.classList.add("hidden")
+
+            }
+            //maye experiment with interval number
+            //should update faster but
+          }, 20)
+        }.bind(this));
+
+        markerVid.addEventListener('markerLost', function () {
+          this.isVisible = false
+          this.vid.classList.add("hidden")
+          this.vid.pause();
+          this.vid.currentTime = 0;
+          document.querySelector("head").removeChild(disableZoom)
+        }.bind(this));
+      }
+    });
+
+    AFRAME.registerComponent('videohandlerFull', {
+      init: function () {
+        let markerFullVid = document.querySelector("#vidFullMarker")
+        let camera = document.querySelector("[camera]");
+        this.isVisible = false
+        this.vid = document.querySelector("#videoFull");
+
+        markerFullVid.addEventListener('markerFound', function () {
+          this.isVisible = true
+          let cameraPosition = camera.object3D.position;
+          let markerPosition = markerFullVid.object3D.position;
+          document.querySelector("head").appendChild(disableZoom)
+          this.vid.classList.remove("hidden")
+          this.vid.play();
+
+        }.bind(this));
+
+        markerVid.addEventListener('markerLost', function () {
+          this.isVisible = false
+          this.vid.classList.add("hidden")
+          this.vid.pause();
+          this.vid.currentTime = 0;
+          document.querySelector("head").removeChild(disableZoom)
+        }.bind(this));
+      }
+    });
   </script>
 
   <style>
@@ -491,7 +574,32 @@
       height: 100%;
       margin: 0;
       padding: 0;
+      pointer-events: none;
     }
+
+    /* @media only screen and (orientation:landscape) {
+      .rotateDevice {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+      }
+
+      .wrap {
+        display: none;
+
+      }
+    }
+
+    @media only screen and (orientation:portrait) {
+      .rotateDevice {
+        display: none;
+
+      }
+
+      .wrap {
+        display: block;
+      }
+    } */
 
     div.wrap {
       height: 100%;
@@ -531,6 +639,21 @@
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    .video {
+      border-left-width: 15px;
+      border-right-width: 15px;
+      border-bottom-width: 40px;
+      border-top-width: 15px;
+      border-color: white;
+      border-style: solid;
+    }
+
+    .fullVideo {
+      width: 100vw;
+      border-color: black;
+      border-width: 500px;
     }
 
     .buttons {
@@ -601,14 +724,17 @@
 
     .a-dialog-allow-button {
       background-color: lightgreen;
+      pointer-events: all;
     }
 
     .a-dialog-deny-button {
       background-color: powderblue;
+      pointer-events: all;
     }
 
     .a-dialog-ok-button {
       background-color: lightgreen;
+      pointer-events: all;
     }
 
     /* 
@@ -621,6 +747,7 @@
 </head>
 
 <body style="margin : 0px; overflow: hidden;" id="body">
+
   <div class="wrap">
 
 
@@ -630,8 +757,19 @@
       </div>
     </div>
     <div class="center">
+      <video
+        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
+        preload="auto" id="video" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+        playsinline class="video hidden">
+      </video>
+      <video
+        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
+        preload="auto" id="videoFull" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+        playsinline class="fullVideo hidden">
+      </video>
       <div class="buttons hidden" id="buttons">
         <button class="say-hi-button " id="btn__lastimage">
+
           <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px" y="0px" viewBox="0 0 57.8 25.4" style="enable-background:new 0 0 57.8 25.4;" xml:space="preserve">
             <path d="M0.4,11.8L0.4,11.8c0-0.1,0-0.1,0.1-0.2c0-0.1,0.1-0.1,0.1-0.1L13.8,0.3c0.6-0.5,1.6-0.4,2.1,0.2s0.4,1.6-0.2,2.1L5.6,11.2
@@ -655,7 +793,8 @@
 
 
     <!-- a-frame scene -->
-    <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
+    <a-scene vr-mode-ui="enabled: false;"
+      renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true; precision: mediump;" embedded
       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
       loading-screen="dotsColor: red; backgroundColor: black" gesture-detector id="scene" stats>
       <a-assets>
@@ -724,17 +863,31 @@
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
         </a-asset-item>
 
+
+
+        <!-- <video
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FWE-Header-Animation.mp4?v=1624955890694"
+          preload="auto" id="vid" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+          playsinline>
+        </video> -->
+
+
+        <!-- <video
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
+          preload="auto" id="vid" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+          playsinline>
+        </video> -->
       </a-assets>
 
 
-      <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" id="vier__marker"
+      <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" id="vier__marker"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
           <a-entity class="clickable"
             image-slider-activate="markerId: vier__marker; slides: slides4; images: [{img: '#vier__1, width: 152, height: 114, headline: 'gebäude1'}, {img: '#vier__2, width: 152, height: 114, headline: 'gebäude2'}, {img: '#vier__3, width: 152, height: 114, headline: 'gebäude3'},  {img: '#vier__4, width: 152, height: 114, headline: 'gebäude4'}]">
           </a-entity>
         </a-entity>
-      </a-nft>
+      </a-nft> -->
 
 
       <a-nft type="nft"
@@ -745,6 +898,13 @@
           <a-entity class="clickable"
             image-slider-activate="markerId: fünf__marker; slides: slides5; images: [{img: '#fünf__1, width: 120, height: 80, headline: 'lobby'}, {img: '#fünf__2, width: 120, height: 80, headline: 'lobby2'}, {img: '#fünf__3, width: 80, height: 120, headline: 'lobby3'},  {img: '#fünf__4, width: 80, height: 120, headline: 'lobby4'},  {img: '#fünf__5, width: 80, height: 120, headline: 'lobby5'}]">
           </a-entity>
+        </a-entity>
+      </a-nft>
+
+      <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" smooth="true" id="vidMarker"
+        smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200" videohandlerFull>
+
         </a-entity>
       </a-nft>
 
@@ -763,8 +923,14 @@
       </a-nft>
 
 
-
       <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
+        smooth="true" id="vidMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200" videohandler>
+
+        </a-entity>
+      </a-nft>
+      <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
         id="yo" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
@@ -772,7 +938,7 @@
             image-slider-activate="markerId: yo; slides: slides2;  images: [{img: '#my-image', width: 80, height: 120, headline: 'waschbecken'}, {img: '#my-image2', width: 80, height: 120, headline: 'waschbecken2'}, {img: '#my-image3', width: 80, height: 120, headline: 'waschbecken3'},  {img: '#my-image4', width: 80, height: 120, headline: 'waschbecken4'},  {img: '#my-image5', width: 80, height: 120, headline: 'waschbecken5'}]">
           </a-entity>
         </a-entity>
-      </a-nft>
+      </a-nft> -->
 
 
       <a-nft type="nft"
@@ -829,7 +995,6 @@
         <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider">
         </a-image>
 
-        </a-image>
 
     </a-scene>
   </div>
@@ -865,7 +1030,6 @@
       } else {
         slider.setAttribute("src", slides[(slideindex -= 1)]);
       }
-
     });
   </script>
 
