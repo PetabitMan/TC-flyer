@@ -548,6 +548,7 @@
         this.vid = document.querySelector("#videoFull");
 
         markerFullVid.addEventListener('markerFound', function () {
+          window.alert("hi")
           this.isVisible = true
 
           document.querySelector("head").appendChild(disableZoom)
