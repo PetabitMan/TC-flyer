@@ -485,7 +485,8 @@
       }
     })
 
-
+    //KAI
+    //der funktioniert
     AFRAME.registerComponent('videohandler', {
       init: function () {
         let markerVid = document.querySelector("#vidMarker")
@@ -540,32 +541,88 @@
       }
     });
 
+    //KAI
+    //der funktioniert nicht
     AFRAME.registerComponent('videoFullhandler', {
       init: function () {
         let markerFullVid = document.querySelector("#vidFullMarker")
 
         this.isVisible = false
-        this.vid = document.querySelector("#videoFull");
+        this.vidFull = document.querySelector("#videoFull");
 
         markerFullVid.addEventListener('markerFound', function () {
-          window.alert("hi")
+
           this.isVisible = true
 
-          document.querySelector("head").appendChild(disableZoom)
-          this.vid.classList.remove("hidden")
-          this.vid.play();
+
+          this.vidFull.classList.remove("hidden")
+          this.vidFull.play();
 
         }.bind(this));
 
         markerFullVid.addEventListener('markerLost', function () {
           this.isVisible = false
-          this.vid.classList.add("hidden")
-          this.vid.pause();
-          this.vid.currentTime = 0;
-          document.querySelector("head").removeChild(disableZoom)
+          this.vidFull.classList.add("hidden")
+          this.vidFull.pause();
+          this.vidFull.currentTime = 0;
+
         }.bind(this));
       }
     });
+
+    //KAI
+    //der funktioniert nicht
+    AFRAME.registerComponent('fullVideo', {
+      init: function () {
+        let markerFullVidTwo = document.querySelector("#fullVideoMarker")
+
+        this.isVisible = false
+        let videoFullLet = document.querySelector("#videoFullTwo");
+
+        markerFullVidTwo.addEventListener('markerFound', function () {
+
+          this.isVisible = true
+
+
+          videoFullLet.classList.remove("hidden")
+          videoFullLet.play();
+
+        });
+
+        markerFullVidTwo.addEventListener('markerLost', function () {
+          this.isVisible = false
+          videoFullLet.classList.add("hidden")
+          vid.eovideoFullLetpause();
+          videoFullLet.currentTime = 0;
+
+        });
+      }
+    });
+
+
+       // AFRAME.registerComponent('ImageSilderHtml', {
+    //   init: function () {
+    //     let markerImageSlider = document.querySelector("#imageSliderMarker")
+
+    //     this.isVisible = false
+    //     this.imageSlider = document.querySelector("#imageSliderHtml");
+
+    //     markerImageSlider.addEventListener('markerFound', function () {
+
+    //       this.isVisible = true
+
+
+
+    //     }.bind(this));
+
+    //     markerImageSlider.addEventListener('markerLost', function () {
+    //       this.isVisible = false
+
+
+    //     }.bind(this));
+    //   }
+    // });
+
   </script>
 
   <style>
@@ -651,8 +708,13 @@
     }
 
     .fullVideo {
-      width: 100vw;
+      width: 100%;
 
+    }
+
+    .fullVideoTwo {
+      width: 100px;
+      height: 100px;
     }
 
     .buttons {
@@ -756,11 +818,24 @@
       </div>
     </div>
     <div class="center">
+      <!-- KAI
+    der funktioniert nicht -->
+      <video
+        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
+        preload="auto" id="videoFullTwo" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+        playsinline class="fullVideoTwo hidden">
+      </video>
+    </div>
+    <div class="center">
+      <!-- KAI
+    der funktioniert -->
       <video
         src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
         preload="auto" id="video" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
         playsinline class="video hidden">
       </video>
+      <!-- KAI
+    der funktioniert nicht -->
       <video
         src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
         preload="auto" id="videoFull" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
@@ -907,10 +982,32 @@
         </a-entity>
       </a-nft> -->
 
+
+
+      <!-- KAI
+    der funktioniert  -->
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
-        smooth="true" id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        smooth="true" id="vidMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
         <a-entity position="50 150 -200" videohandler>
+
+        </a-entity>
+      </a-nft>
+      <!-- KAI
+    der funktioniert nicht -->
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
+        smooth="true" id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200" videoFullhandler>
+
+        </a-entity>
+      </a-nft>
+      <!-- KAI
+    der funktioniert nicht -->
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
+        smooth="true" id="fullVideoMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200" fullVideo>
 
         </a-entity>
       </a-nft>
@@ -930,13 +1027,7 @@
       </a-nft>
 
 
-      <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
-        smooth="true" id="vidMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-        <a-entity position="50 150 -200" videoFullhandler>
 
-        </a-entity>
-      </a-nft>
       <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
         id="yo" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
@@ -972,13 +1063,13 @@
       </a-nft>
 
 
-
+      <!-- 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
         smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="10" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
 
-      </a-nft>
+      </a-nft> -->
 
 
       <a-entity camera>
