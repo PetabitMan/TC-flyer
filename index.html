@@ -13,6 +13,10 @@
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v5.0.1/dist/aframe-extras.min.js"></script>
 
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
   <!-- Gesture decting add to scene in order to work -->
   <script>
 
@@ -488,7 +492,11 @@
     //KAI
     //der funktioniert
     AFRAME.registerComponent('videohandler', {
+      schema: {
+
+      },
       init: function () {
+
         let markerVid = document.querySelector("#vidMarker")
         let camera = document.querySelector("[camera]");
         this.isVisible = false
@@ -539,12 +547,16 @@
           document.querySelector("head").removeChild(disableZoom)
         }.bind(this));
       }
-    });
+    })
 
     //KAI
     //der funktioniert nicht
-    AFRAME.registerComponent('videoFullhandler', {
+    AFRAME.registerComponent('videofullhandler', {
+      schema: {
+
+      },
       init: function () {
+
         let markerFullVid = document.querySelector("#vidFullMarker")
 
         this.isVisible = false
@@ -568,16 +580,20 @@
 
         }.bind(this));
       }
-    });
+    })
 
     //KAI
     //der funktioniert nicht
-    AFRAME.registerComponent('fullVideo', {
+    AFRAME.registerComponent('imageslidermagic', {
+      schema: {
+
+      },
       init: function () {
-        let markerFullVidTwo = document.querySelector("#fullVideoMarker")
+
+        let markerFullVidTwo = document.querySelector("#ImageSliderMarkerMagic")
 
         this.isVisible = false
-        let videoFullLet = document.querySelector("#videoFullTwo");
+        let videoFullLet = document.querySelector("#carouselExampleControls");
 
         markerFullVidTwo.addEventListener('markerFound', function () {
 
@@ -585,19 +601,19 @@
 
 
           videoFullLet.classList.remove("hidden")
-          videoFullLet.play();
+
 
         });
 
         markerFullVidTwo.addEventListener('markerLost', function () {
           this.isVisible = false
           videoFullLet.classList.add("hidden")
-          vid.eovideoFullLetpause();
-          videoFullLet.currentTime = 0;
+
+
 
         });
       }
-    });
+    })
 
 
        // AFRAME.registerComponent('ImageSilderHtml', {
@@ -709,13 +725,12 @@
 
     .fullVideo {
       width: 100%;
-
+      border-color: black;
+      border-bottom-width: 800px;
+      border-top-width: 800px;
     }
 
-    .fullVideoTwo {
-      width: 100px;
-      height: 100px;
-    }
+
 
     .buttons {
       z-index: 10;
@@ -820,11 +835,33 @@
     <div class="center">
       <!-- KAI
     der funktioniert nicht -->
-      <video
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
-        preload="auto" id="videoFullTwo" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
-        playsinline class="fullVideoTwo hidden">
-      </video>
+      <div id="carouselExampleControls" class="carousel slide hidden" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="d-block w-100"
+              src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_.1jpg.jpg?v=1624191646934"
+              alt="First slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100"
+              src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_3.jpg?v=1624190764000"
+              alt="Second slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100"
+              src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_2.jpg?v=1624192512943"
+              alt="Third slide">
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
     </div>
     <div class="center">
       <!-- KAI
@@ -987,7 +1024,7 @@
       <!-- KAI
     der funktioniert  -->
       <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
         smooth="true" id="vidMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
         <a-entity position="50 150 -200" videohandler>
 
@@ -996,9 +1033,9 @@
       <!-- KAI
     der funktioniert nicht -->
       <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
         smooth="true" id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-        <a-entity position="50 150 -200" videoFullhandler>
+        <a-entity position="50 150 -200" videofullhandler>
 
         </a-entity>
       </a-nft>
@@ -1006,8 +1043,8 @@
     der funktioniert nicht -->
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
-        smooth="true" id="fullVideoMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-        <a-entity position="50 150 -200" fullVideo>
+        smooth="true" id="ImageSliderMarkerMagic" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200" imageslidermagic>
 
         </a-entity>
       </a-nft>
