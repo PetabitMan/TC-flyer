@@ -14,9 +14,6 @@
   <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v5.0.1/dist/aframe-extras.min.js"></script>
 
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
   <!-- Gesture decting add to scene in order to work -->
   <script>
 
@@ -218,7 +215,7 @@
         maxScale: { default: 8 },
         positionFactor: { default: 10 },
         name: {
-          dafault: "model"
+          default: "model"
         }
       },
 
@@ -331,7 +328,7 @@
     });
   </script>
 
-  <!-- Activate imageslider with dynamic properties -->
+
   <script>
 
     let disableZoom = document.createElement("meta")
@@ -352,7 +349,7 @@
 
         modelMarker.addEventListener("markerFound", e => {
           this.isVisible = true;
-
+          window.alert("hi")
           model.setAttribute('visible', true);
           plane.setAttribute('visible', true);
 
@@ -368,10 +365,9 @@
       tick: function (time, deltaTime) {
 
       }
-    })
+    });
 
-    //KAI
-    //der funktioniert
+
     AFRAME.registerComponent('videohandler', {
       schema: {
 
@@ -428,7 +424,7 @@
           document.querySelector("head").removeChild(disableZoom)
         }.bind(this));
       }
-    })
+    });
 
     //KAI
     //der funktioniert nicht
@@ -461,37 +457,37 @@
 
         }.bind(this));
       }
-    })
-    AFRAME.registerComponent('previousnext', {
-      schema: {
+    });
+    // AFRAME.registerComponent('previousnext', {
+    //   schema: {
 
-      },
-      init: function () {
+    //   },
+    //   init: function () {
 
-        let markerPreviousNext = document.querySelector("#previousNextMarker")
+    //     let markerPreviousNext = document.querySelector("#previousNextMarker")
 
-        this.isVisible = false
-        this.sliderPreviousNext = document.querySelector("#sliderPreviousNext");
+    //     this.isVisible = false
+    //     this.sliderPreviousNext = document.querySelector("#sliderPreviousNext");
 
-        markerPreviousNext.addEventListener('markerFound', function () {
+    //     markerPreviousNext.addEventListener('markerFound', function () {
 
-          this.isVisible = true
-
-
-          this.sliderPreviousNext.classList.remove("hidden")
+    //       this.isVisible = true
 
 
-        }.bind(this));
-
-        markerPreviousNext.addEventListener('markerLost', function () {
-          this.isVisible = false
-          this.sliderPreviousNext.classList.add("hidden")
+    //       this.sliderPreviousNext.classList.remove("hidden")
 
 
+    //     }.bind(this));
 
-        }.bind(this));
-      }
-    })
+    //     markerPreviousNext.addEventListener('markerLost', function () {
+    //       this.isVisible = false
+    //       this.sliderPreviousNext.classList.add("hidden")
+
+
+
+    //     }.bind(this));
+    //   }
+    // })
 
     //KAI
     //der funktioniert nicht
@@ -517,7 +513,7 @@
         });
 
       }
-    })
+    });
 
 
        // AFRAME.registerComponent('ImageSilderHtml', {
@@ -551,32 +547,10 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      pointer-events: none;
+
     }
 
-    /* @media only screen and (orientation:landscape) {
-      .rotateDevice {
-        display: flex;
-        justify-content: center;
-        align-content: center;
-      }
 
-      .wrap {
-        display: none;
-
-      }
-    }
-
-    @media only screen and (orientation:portrait) {
-      .rotateDevice {
-        display: none;
-
-      }
-
-      .wrap {
-        display: block;
-      }
-    } */
 
     div.wrap {
       height: 100%;
@@ -691,37 +665,7 @@
       text-transform: uppercase;
     }
 
-    #gallery {
-      max-width: 100%;
-      max-height: 80%;
-      pointer-events: all;
-      z-index: 7886;
-    }
 
-    .newPic {
-      color: white;
-      padding: 5px 20px;
-      background-color: #68B3AF;
-      border-radius: 25px;
-      border: solid 2px #fff;
-      height: 50px;
-      font-size: 1.1em;
-      cursor: pointer;
-      margin: 5px 5px 0 5px;
-      display: flex;
-      align-items: center;
-    }
-
-    .newPic:hover {
-      background-color: #518a8c;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      margin: 20px;
-      justify-content: center;
-    }
 
     /* 
     Maybe overlaying scenes like that
@@ -745,8 +689,7 @@
     <div class="center">
 
 
-      <video
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
+      <video src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2F1050658927-preview.mp4?v=1629187575735"
         preload="auto" id="videoDone" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
         playsinline class="fullVideo hidden">
       </video>
@@ -755,24 +698,22 @@
       </div>
     </div>
 
-  </div>
-  <div class="center">
 
-    <video
-      src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
-      preload="auto" id="video" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
-      playsinline class="video hidden">
-    </video>
+    <div class="center">
+
+      <video src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2F1055349605-preview.mp4?v=1629187575067"
+        preload="auto" id="video" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+        playsinline class="video hidden">
+      </video>
 
 
-    <video
-      src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
-      preload="auto" id="videoFull" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
-      playsinline class="fullVideo hidden">
-    </video>
+      <video src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2F1071648223-preview.mp4?v=1629187573833"
+        preload="auto" id="videoFull" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+        playsinline class="fullVideo hidden">
+      </video>
 
-  </div>
-  <div class="center">
+
+      <!-- <div class="center">
     <div class="buttons hidden" id="buttons">
       <button class="say-hi-button " id="btn__lastimage">
 
@@ -795,99 +736,25 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
         </svg>
       </button>
     </div>
-  </div>
+  </div> -->
+    </div>
+    <!-- a-frame scene -->
+    <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
+      loading-screen="dotsColor: red; backgroundColor: black" gesture-detector id="scene" stats>
 
-  <!-- a-frame scene -->
-  <a-scene vr-mode-ui="enabled: false;"
-    renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true; precision: mediump;" embedded
-    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
-    loading-screen="dotsColor: red; backgroundColor: black" gesture-detector id="scene" stats>
-    <a-assets>
-
-
-      <!-- <img id="my-image"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fmery.jpg?v=1619597239473" />
-        <img id="my-image2"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fme.jpg?v=1619597297120" />
-        <img id="my-image3"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_1.jpg?v=1619598198727" />
-        <img id="my-image4"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
-        <img id="my-image5"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
-        <img id="vier--1"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_1.jpg?v=1624190913370" />
-        <img id="vier--2"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_2.jpg?v=1624190764823" />
-        <img id="vier--3"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_3.jpg?v=1624190764000" />
-        <img id="vier--4"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_4.jpg?v=1624190764604" />
-        <img id="dreizehn--1"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_.1jpg.jpg?v=1624191646934" />
-        <img id="dreizehn--2"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_2.jpg?v=1624191646811" />
-        <img id="dreizehn--3"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_3.jpg?v=1624191647306" />
-        <img id="dreizehn--4"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_4.jpg?v=1624191647325" />
-        <img id="dreizehn--5"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_5.jpg?v=1624191647259" />
-        <img id="zehn--1"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_1.jpg?v=1624191905429" />
-        <img id="zehn--2"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_2.jpg?v=1624191903402" />
-        <img id="zehn--3"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_3.jpg?v=1624191903943" />
-        <img id="zehn--4"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_4.jpg?v=1624191904505" />
-        <img id="zehn--5"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_5.jpg?v=1624191905402" />
-        <img id="achtzehn--1"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_1.jpg?v=1624192189503" />
-        <img id="achtzehn--2"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_2.jpg?v=1624192190774" />
-        <img id="achtzehn--3"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_3.jpg?v=1624192190697" />
-        <img id="achtzehn--4"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_4.jpg?v=1624192191123" />
-        <img id="achtzehn--5"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_5.jpg?v=1624192190953" />
-        <img id="achtzehn--6"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_6.jpg?v=1624192190564" />
-        <img id="fünf--1"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_.jpg?v=1624192511300" />
-        <img id="fünf--2"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_2.jpg?v=1624192512943" />
-        <img id="fünf--3"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_3.jpg?v=1624192513160" />
-        <img id="fünf--4"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_4.jpg?v=1624192513145" />
-        <img id="fünf--5"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_5.jpg?v=1624192513558" /> -->
-
-      <a-asset-item id="area3" response-type="arraybuffer"
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
-      </a-asset-item>
+      <a-assets>
 
 
-
-      <!-- <video
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FWE-Header-Animation.mp4?v=1624955890694"
-          preload="auto" id="vid" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
-          playsinline>
-        </video> -->
+        <a-asset-item id="area3" response-type="arraybuffer"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
+        </a-asset-item>
 
 
-      <!-- <video
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
-          preload="auto" id="vid" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
-          playsinline>
-        </video> -->
-    </a-assets>
+      </a-assets>
 
 
-    <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" id="vier__marker"
+      <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" id="vier__marker"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
           <a-entity class="clickable"
@@ -897,7 +764,7 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
       </a-nft> -->
 
 
-    <!-- <a-nft type="nft"
+      <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="fünf__marker">
@@ -908,67 +775,67 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
         </a-entity>
       </a-nft> -->
 
-    <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" smooth="true"
+      <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" smooth="true"
         id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-        <a-entity position="50 150 -200" videohandlerFull>
+        <a-entity position="50 150 -200" >
 
         </a-entity>
       </a-nft> -->
 
 
 
-    <!-- KAI
-    der funktioniert  -->
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
-      smooth="true" id="vidMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-      <a-entity position="50 150 -200" videohandler>
+      <!-- video that scales -->
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
+        smooth="true" id="vidMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200" videohandler>
 
-      </a-entity>
-    </a-nft>
-    <!-- KAI
-    der funktioniert nicht -->
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
-      smooth="true" id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-      <a-entity position="50 150 -200" videofullhandler>
+        </a-entity>
+      </a-nft>
 
-      </a-entity>
-    </a-nft>
-    <!-- KAI
-    der funktioniert nicht -->
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
-      smooth="true" id="videoDoneMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-      <a-entity position="50 150 -200" videodonebutton>
+      <!-- fullvideo -->
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
+        smooth="true" id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200" videofullhandler>
 
-      </a-entity>
-    </a-nft>
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
-      smooth="true" id="previousNextMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-      <a-entity position="50 150 -200" previousnext>
+        </a-entity>
+      </a-nft>
+      <!-- fullvideo mit done button -->
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
+        smooth="true" id="videoDoneMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200" videodonebutton>
 
-      </a-entity>
-    </a-nft>
+        </a-entity>
+      </a-nft>
 
-    <a-nft type="nft"
-      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kala/kala"
-      smooth="true" smoothCount="20" smoothTolerance=".01" smoothThreshold="10" raycaster="objects: .clickable"
-      emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="modelmarker">
+      <!-- object model -->
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kala/kala"
+        smooth="true" smoothCount="20" smoothTolerance=".01" smoothThreshold="10" raycaster="objects: .clickable"
+        emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="modelmarker">
 
-      <!-- 
-        <a-entity light="type: directional; color: #FFF; intensity: 10" position="-0.5 1 1"></a-entity> -->
-
-      <a-entity position="50 150 -200" objectmodel-detected>
-      </a-entity>
+        <a-entity position="50 150 -200" objectmodel-detected>
+        </a-entity>
 
 
-    </a-nft>
+      </a-nft>
+
+
+      <a-nft type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
+        smooth="true" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200">
+
+        </a-entity>
+      </a-nft>
 
 
 
-    <!-- <a-nft type="nft"
+
+
+      <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
         id="yo" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
@@ -978,7 +845,7 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
         </a-entity>
       </a-nft> -->
 
-    <!-- 
+      <!-- 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
         id="banana" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
@@ -990,7 +857,7 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
         </a-entity>
       </a-nft> -->
 
-    <!-- <a-nft type="nft"
+      <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="achtzehn__marker">
@@ -1003,7 +870,7 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
       </a-nft> -->
 
 
-    <!-- 
+      <!-- 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
         smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="10" raycaster="objects: .clickable"
@@ -1012,29 +879,29 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
       </a-nft> -->
 
 
-    <a-entity camera>
-      <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
-        geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
-      </a-entity>
-
-      <!-- 30 57 20 -->
-      <a-entity position="0 0 0" rotation="0 0 20">
-        <a-entity gesture-handler="minScale:0.7; maxScale:1.5; name:model" class="clickable" visible="false" id="area"
-          position="0 0 -1" rotation="30 57 0" gltf-model="#area3" scale="2 2 2">
+      <a-entity camera>
+        <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
+          geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
         </a-entity>
-        <a-plane gesture-handler="minScale:0.7; maxScale:1.5; name:plane;" class="clickable" width="0.5" height="0.5"
-          opacity="0.9" position="0 0 -1" id="plane" rotation="-60 57 0" color="white" visible="false">
 
-        </a-plane>
+        <!-- 30 57 20 -->
+        <a-entity position="0 0 0" rotation="0 0 20">
+          <a-entity gesture-handler="minScale:0.7; maxScale:1.5; name:model" class="clickable" visible="false" id="area"
+            position="0 0 -1" rotation="30 57 0" gltf-model="#area3" scale="2 2 2">
+          </a-entity>
+          <a-plane gesture-handler="minScale:0.7; maxScale:1.5; name:plane;" class="clickable" width="0.5" height="0.5"
+            opacity="0.9" position="0 0 -1" id="plane" rotation="-60 57 0" color="white" visible="false">
+
+          </a-plane>
+        </a-entity>
+
+
+
+        <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider">
+        </a-image>
+
       </a-entity>
-
-
-
-      <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider">
-      </a-image>
-
-
-  </a-scene>
+    </a-scene>
   </div>
   <script>
 
@@ -1294,3 +1161,64 @@ if (slide__width * 895 < (window.screen.width - 30) && slide__width * 895> (wind
 
   }
   }); -->
+
+<!-- <img id="my-image"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fmery.jpg?v=1619597239473" />
+        <img id="my-image2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fme.jpg?v=1619597297120" />
+        <img id="my-image3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_1.jpg?v=1619598198727" />
+        <img id="my-image4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FSlide_2.jpg?v=1619598223588" />
+        <img id="my-image5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fimage--010.jpg?v=1621338004993" />
+        <img id="vier--1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_1.jpg?v=1624190913370" />
+        <img id="vier--2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_2.jpg?v=1624190764823" />
+        <img id="vier--3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_3.jpg?v=1624190764000" />
+        <img id="vier--4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_4.jpg?v=1624190764604" />
+        <img id="dreizehn--1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_.1jpg.jpg?v=1624191646934" />
+        <img id="dreizehn--2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_2.jpg?v=1624191646811" />
+        <img id="dreizehn--3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_3.jpg?v=1624191647306" />
+        <img id="dreizehn--4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_4.jpg?v=1624191647325" />
+        <img id="dreizehn--5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_5.jpg?v=1624191647259" />
+        <img id="zehn--1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_1.jpg?v=1624191905429" />
+        <img id="zehn--2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_2.jpg?v=1624191903402" />
+        <img id="zehn--3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_3.jpg?v=1624191903943" />
+        <img id="zehn--4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_4.jpg?v=1624191904505" />
+        <img id="zehn--5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_5.jpg?v=1624191905402" />
+        <img id="achtzehn--1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_1.jpg?v=1624192189503" />
+        <img id="achtzehn--2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_2.jpg?v=1624192190774" />
+        <img id="achtzehn--3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_3.jpg?v=1624192190697" />
+        <img id="achtzehn--4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_4.jpg?v=1624192191123" />
+        <img id="achtzehn--5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_5.jpg?v=1624192190953" />
+        <img id="achtzehn--6"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fachtzehn_6.jpg?v=1624192190564" />
+        <img id="fünf--1"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_.jpg?v=1624192511300" />
+        <img id="fünf--2"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_2.jpg?v=1624192512943" />
+        <img id="fünf--3"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_3.jpg?v=1624192513160" />
+        <img id="fünf--4"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_4.jpg?v=1624192513145" />
+        <img id="fünf--5"
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_5.jpg?v=1624192513558" /> -->
