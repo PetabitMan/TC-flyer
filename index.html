@@ -573,7 +573,7 @@
   <style>
     body,
     html {
-      height: 100%;
+      height: 100vh;
       margin: 0;
       padding: 0;
 
@@ -582,8 +582,10 @@
 
 
     div.wrap {
-      height: 100%;
+      height: 100vh;
       overflow: hidden;
+      margin: 0;
+      padding: 0;
     }
 
     .arjs-loader {
@@ -628,6 +630,8 @@
       border-top-width: 15px;
       border-color: white;
       border-style: solid;
+      pointer-events: all;
+      z-index: 1000;
     }
 
     .fullVideo {
@@ -638,12 +642,10 @@
       border-right-width: 15px;
       border-top-width: 800px;
       border-style: solid;
+      pointer-events: all;
+      z-index: 1000;
+
     }
-
-
-
-
-
 
 
     .hidden {
@@ -683,8 +685,8 @@
 
     .doneButton {
       position: absolute;
-      left: 80%;
-      top: 10%;
+      left: 85%;
+      top: 5%;
       z-index: 1000;
       pointer-events: all;
       background: white;
@@ -776,9 +778,9 @@
     /* Fading animation */
     .fade {
       -webkit-animation-name: fade;
-      -webkit-animation-duration: 0.2s;
+      -webkit-animation-duration: 0.1s;
       animation-name: fade;
-      animation-duration: 0.2s;
+      animation-duration: 0.1s;
     }
 
     @-webkit-keyframes fade {
@@ -834,8 +836,8 @@
 
 
       <video src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2F1050658927-preview.mp4?v=1629187575735"
-        preload="auto" id="videoDone" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
-        playsinline class="fullVideo hidden">
+        preload="auto" id="videoDone" response-type="arraybuffer" loop crossorigin webkit-playsinline
+        autoplay="autoplay" muted playsinline class="fullVideo hidden">
       </video>
       <div class="doneButton hidden" id="doneButton">
         <p>DONE</p>
@@ -873,14 +875,14 @@
     <div class="center">
 
       <video src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2F1055349605-preview.mp4?v=1629187575067"
-        preload="auto" id="video" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
-        playsinline class="video hidden">
+        preload="auto" id="video" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay="autoplay"
+        muted playsinline class="video hidden">
       </video>
 
 
       <video src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2F1071648223-preview.mp4?v=1629187573833"
-        preload="auto" id="videoFull" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
-        playsinline class="fullVideo hidden">
+        preload="auto" id="videoFull" response-type="arraybuffer" loop crossorigin webkit-playsinline
+        autoplay="autoplay" muted playsinline class="fullVideo hidden">
       </video>
 
 
@@ -909,10 +911,11 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
     </div>
   </div> -->
     </div>
+
     <!-- a-frame scene -->
     <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
-      loading-screen="dotsColor: red; backgroundColor: black" gesture-detector id="scene" stats>
+      loading-screen="dotsColor: red; backgroundColor: black" gesture-detector id="scene">
 
       <a-assets>
 
