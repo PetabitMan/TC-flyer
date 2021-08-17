@@ -333,130 +333,11 @@
 
   <!-- Activate imageslider with dynamic properties -->
   <script>
-    var slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
-    const slides2 = ["#dreizehn--1", "#dreizehn--2", "#dreizehn--3", "#dreizehn--4", "#dreizehn--5"]
-    const slides8 = ["#achtzehn--1", "#achtzehn--2", "#achtzehn--3", "#achtzehn--4", "#achtzehn--5", "#achtzehn--6"]
-    const slides5 = ['#fünf--1', '#fünf--2', '#fünf--3', '#fünf--4', '#fünf--5']
-    const slides3 = ["#zehn--1", "#zehn--2", "#zehn--3", "#zehn--4", "#zehn--5"]
-    const slides4 = ["#vier--1", "#vier--2", "#vier--3", "#vier--4"]
+
     let disableZoom = document.createElement("meta")
     disableZoom.setAttribute("name", "viewport")
     disableZoom.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no")
-    AFRAME.registerComponent("image-slider-activate", {
-      schema: {
-        enabled: { default: true },
-        images: {
-          default: [{ img: '#my-image5', width: 120, height: 80, headline: 'peace' }, { img: '#my-image3', width: 120, height: 80, headline: 'was geht' }]
-        },
-        slides: {
-          default: "slides2"
-        },
-        markerId: { default: "yo" }
-      },
 
-      init: function () {
-
-        this.index = 0;
-        this.isVisible = false;
-        let dataSlides = this.data.slides;
-
-        let images = this.data.images;
-        slider.setAttribute("src", slides[0])
-        let img__index = slides.indexOf(slider.getAttribute("src"));
-        let markerId = this.data.markerId;
-        let widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11)) ?? 120
-
-        let camera = document.querySelector("[camera]");
-        let heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12)) ?? 100
-
-        let buttons = document.getElementById("buttons");
-        let element = document.getElementById("image-slider");
-        let marker = document.getElementById(markerId);
-        let img__text = document.getElementById("img__text")
-
-
-
-
-
-        const click__event = new MouseEvent("click", { view: window, bubbles: true, cancelable: true });
-
-        marker.addEventListener("markerFound", e => {
-
-          this.isVisible = true;
-
-          buttons.classList.remove("hidden");
-          // inc__button.dispatchEvent(click__event)
-          let cameraPosition = camera.object3D.position;
-          let markerPosition = marker.object3D.position;
-          document.querySelector("head").appendChild(disableZoom)
-          switch (dataSlides) {
-            case "slides2":
-              slides = slides2
-              break;
-            case "slides3":
-              slides = slides3
-              break;
-            case "slides8":
-              slides = slides8
-              break;
-            case "slides5":
-              slides = slides5
-              break;
-            case "slides4":
-              slides = slides4
-              break;
-            default:
-              slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
-              break;
-          }
-          next__button.dispatchEvent(click__event);
-
-          setInterval(() => {
-
-
-            if (this.isVisible) {
-              let distance = cameraPosition.distanceTo(markerPosition);
-              element.setAttribute('visible', true);
-              img__index = slides.indexOf(slider.getAttribute("src"));
-              img__text.innerHTML = images[img__index * 4 + 3].toString().substring(9, 25).replace("}", "").replace("]", "").replace("'", "").replace("'", "")
-
-              widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11))
-              heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12))
-              let slide__height = (heightDim / distance);
-              let slide__width = (widthDim / distance);
-              // limit size
-              if (slide__width * 895 < (window.screen.width - 30) && slide__width * 895 > (window.screen.width / 2.5)) {
-                element.setAttribute("width", slide__width.toString());
-                element.setAttribute("height", slide__height.toString());
-                buttons.style = `width: ${slide__width * 895}px; height: ${slide__height * 885}px;}`
-              }
-
-            } else {
-              // setAttribute('visible', false); might better
-
-
-              element.setAttribute('visible', false);
-
-            }
-            //maye experiment with interval number
-            //should update faster but 
-          }, 20)
-
-        });
-
-        marker.addEventListener("markerLost", e => {
-          this.isVisible = false;
-
-          buttons.classList.add("hidden");
-          document.querySelector("head").removeChild(disableZoom)
-
-          element.setAttribute('visible', false);
-        });
-      },
-      tick: function (time, deltaTime) {
-
-      }
-    });
 
 
     AFRAME.registerComponent('objectmodel-detected', {
@@ -581,37 +462,60 @@
         }.bind(this));
       }
     })
-
-    //KAI
-    //der funktioniert nicht
-    AFRAME.registerComponent('imageslidermagic', {
+    AFRAME.registerComponent('previousnext', {
       schema: {
 
       },
       init: function () {
 
-        let markerFullVidTwo = document.querySelector("#ImageSliderMarkerMagic")
+        let markerPreviousNext = document.querySelector("#previousNextMarker")
 
         this.isVisible = false
-        let videoFullLet = document.querySelector("#carouselExampleControls");
+        this.sliderPreviousNext = document.querySelector("#sliderPreviousNext");
 
-        markerFullVidTwo.addEventListener('markerFound', function () {
+        markerPreviousNext.addEventListener('markerFound', function () {
 
           this.isVisible = true
 
 
-          videoFullLet.classList.remove("hidden")
+          this.sliderPreviousNext.classList.remove("hidden")
 
 
-        });
+        }.bind(this));
 
-        markerFullVidTwo.addEventListener('markerLost', function () {
+        markerPreviousNext.addEventListener('markerLost', function () {
           this.isVisible = false
-          videoFullLet.classList.add("hidden")
+          this.sliderPreviousNext.classList.add("hidden")
 
 
+
+        }.bind(this));
+      }
+    })
+
+    //KAI
+    //der funktioniert nicht
+    AFRAME.registerComponent('videodonebutton', {
+      schema: {
+
+      },
+      init: function () {
+
+        let markerFullVidTwo = document.querySelector("#videoDoneMarker")
+
+        this.isVisible = false
+        let videoFullLet = document.querySelector("#videoDone");
+
+        markerFullVidTwo.addEventListener('markerFound', function () {
+
+          this.isVisible = true
+          document.querySelector("#doneButton").classList.remove("hidden")
+          document.querySelector("#videoDone").classList.remove("hidden")
+          videoFullLet.classList.remove("hidden")
+          videoFullLet.play()
 
         });
+
       }
     })
 
@@ -727,54 +631,15 @@
       width: 100%;
       border-color: black;
       border-bottom-width: 800px;
-      border-top-width: 800px;
-    }
-
-
-
-    .buttons {
-      z-index: 10;
       border-left-width: 15px;
       border-right-width: 15px;
-      border-bottom-width: 40px;
-      border-top-width: 15px;
-      border-color: white;
+      border-top-width: 800px;
       border-style: solid;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      position: relative;
-      bottom: 5.5%;
-      left: 2.05%;
-      pointer-events: none;
     }
 
 
-    .say-hi-button {
-      padding: 0.25em;
-      border-radius: 4px;
-      border: none;
-      background: none;
-      color: black;
-      width: 50px;
-      height: 30px;
-      position: relative;
-      top: 35px;
-      pointer-events: all;
-    }
 
-    .say-bye-button {
-      padding: 0.25em;
-      border-radius: 4px;
-      border: none;
-      background: none;
-      color: black;
-      width: 50px;
-      height: 30px;
-      position: relative;
-      top: 35px;
-      pointer-events: all;
-    }
+
 
 
 
@@ -813,6 +678,51 @@
       pointer-events: all;
     }
 
+    .doneButton {
+      position: absolute;
+      left: 80%;
+      top: 10%;
+      z-index: 1000;
+      pointer-events: all;
+      background: white;
+      color: black;
+      border-radius: 5px;
+      padding: 10px 5px;
+      text-transform: uppercase;
+    }
+
+    #gallery {
+      max-width: 100%;
+      max-height: 80%;
+      pointer-events: all;
+      z-index: 7886;
+    }
+
+    .newPic {
+      color: white;
+      padding: 5px 20px;
+      background-color: #68B3AF;
+      border-radius: 25px;
+      border: solid 2px #fff;
+      height: 50px;
+      font-size: 1.1em;
+      cursor: pointer;
+      margin: 5px 5px 0 5px;
+      display: flex;
+      align-items: center;
+    }
+
+    .newPic:hover {
+      background-color: #518a8c;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 20px;
+      justify-content: center;
+    }
+
     /* 
     Maybe overlaying scenes like that
     a-scene {
@@ -833,83 +743,69 @@
       </div>
     </div>
     <div class="center">
-      <!-- KAI
-    der funktioniert nicht -->
-      <div id="carouselExampleControls" class="carousel slide hidden" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img class="d-block w-100"
-              src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fdreizehn_.1jpg.jpg?v=1624191646934"
-              alt="First slide">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block w-100"
-              src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fvier_3.jpg?v=1624190764000"
-              alt="Second slide">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block w-100"
-              src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_2.jpg?v=1624192512943"
-              alt="Third slide">
-          </div>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-      </div>
-    </div>
-    <div class="center">
-      <!-- KAI
-    der funktioniert -->
+
+
       <video
         src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
-        preload="auto" id="video" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
-        playsinline class="video hidden">
-      </video>
-      <!-- KAI
-    der funktioniert nicht -->
-      <video
-        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
-        preload="auto" id="videoFull" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+        preload="auto" id="videoDone" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
         playsinline class="fullVideo hidden">
       </video>
-      <div class="buttons hidden" id="buttons">
-        <button class="say-hi-button " id="btn__lastimage">
-
-          <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" viewBox="0 0 57.8 25.4" style="enable-background:new 0 0 57.8 25.4;" xml:space="preserve">
-            <path d="M0.4,11.8L0.4,11.8c0-0.1,0-0.1,0.1-0.2c0-0.1,0.1-0.1,0.1-0.1L13.8,0.3c0.6-0.5,1.6-0.4,2.1,0.2s0.4,1.6-0.2,2.1L5.6,11.2
-	h50.7c0.8,0,1.5,0.7,1.5,1.5s-0.7,1.5-1.5,1.5H5.6l10.1,8.6c0.7,0.5,0.7,1.5,0.2,2.1c-0.3,0.3-0.7,0.5-1.1,0.5s-0.7-0.1-1-0.3
-	L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4,11.8z" />
-          </svg>
-
-        </button>
-        <p class="img__text" id="img__text">yo</p>
-        <button class="say-bye-button " id="btn__nextimage">
-          <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" viewBox="0 0 57.8 25.4" style="enable-background:new 0 0 57.8 25.4;" xml:space="preserve">
-            <path d="M57.8,12.7c0,0.3-0.1,0.7-0.3,0.9c0,0,0,0,0,0c0,0.1-0.1,0.1-0.1,0.2c0,0,0,0,0,0L44,25.1c-0.3,0.2-0.6,0.3-1,0.3
-         c-0.4,0-0.8-0.2-1.1-0.5c-0.5-0.6-0.5-1.6,0.2-2.1l10.1-8.6H1.5c-0.8,0-1.5-0.7-1.5-1.5c0-0.8,0.7-1.5,1.5-1.5h50.7L42.1,2.6
-         c-0.6-0.5-0.7-1.5-0.2-2.1c0.5-0.6,1.5-0.7,2.1-0.2l13.2,11.2c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0,0
-         C57.7,12.1,57.8,12.4,57.8,12.7z" />
-          </svg>
-        </button>
+      <div class="doneButton hidden" id="doneButton">
+        <p>DONE</p>
       </div>
     </div>
 
+  </div>
+  <div class="center">
 
-    <!-- a-frame scene -->
-    <a-scene vr-mode-ui="enabled: false;"
-      renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true; precision: mediump;" embedded
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
-      loading-screen="dotsColor: red; backgroundColor: black" gesture-detector id="scene" stats>
-      <a-assets>
-        <img id="my-image"
+    <video
+      src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
+      preload="auto" id="video" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+      playsinline class="video hidden">
+    </video>
+
+
+    <video
+      src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
+      preload="auto" id="videoFull" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
+      playsinline class="fullVideo hidden">
+    </video>
+
+  </div>
+  <div class="center">
+    <div class="buttons hidden" id="buttons">
+      <button class="say-hi-button " id="btn__lastimage">
+
+        <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px" y="0px" viewBox="0 0 57.8 25.4" style="enable-background:new 0 0 57.8 25.4;" xml:space="preserve">
+          <path d="M0.4,11.8L0.4,11.8c0-0.1,0-0.1,0.1-0.2c0-0.1,0.1-0.1,0.1-0.1L13.8,0.3c0.6-0.5,1.6-0.4,2.1,0.2s0.4,1.6-0.2,2.1L5.6,11.2
+h50.7c0.8,0,1.5,0.7,1.5,1.5s-0.7,1.5-1.5,1.5H5.6l10.1,8.6c0.7,0.5,0.7,1.5,0.2,2.1c-0.3,0.3-0.7,0.5-1.1,0.5s-0.7-0.1-1-0.3
+L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4,11.8z" />
+        </svg>
+
+      </button>
+      <p class="img__text" id="img__text">yo</p>
+      <button class="say-bye-button " id="btn__nextimage">
+        <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px" y="0px" viewBox="0 0 57.8 25.4" style="enable-background:new 0 0 57.8 25.4;" xml:space="preserve">
+          <path d="M57.8,12.7c0,0.3-0.1,0.7-0.3,0.9c0,0,0,0,0,0c0,0.1-0.1,0.1-0.1,0.2c0,0,0,0,0,0L44,25.1c-0.3,0.2-0.6,0.3-1,0.3
+     c-0.4,0-0.8-0.2-1.1-0.5c-0.5-0.6-0.5-1.6,0.2-2.1l10.1-8.6H1.5c-0.8,0-1.5-0.7-1.5-1.5c0-0.8,0.7-1.5,1.5-1.5h50.7L42.1,2.6
+     c-0.6-0.5-0.7-1.5-0.2-2.1c0.5-0.6,1.5-0.7,2.1-0.2l13.2,11.2c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0,0
+     C57.7,12.1,57.8,12.4,57.8,12.7z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- a-frame scene -->
+  <a-scene vr-mode-ui="enabled: false;"
+    renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true; precision: mediump;" embedded
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; sourceWidth:640; sourceHeight:480; displayWidth: 640; displayHeight: 480;"
+    loading-screen="dotsColor: red; backgroundColor: black" gesture-detector id="scene" stats>
+    <a-assets>
+
+
+      <!-- <img id="my-image"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fmery.jpg?v=1619597239473" />
         <img id="my-image2"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fme.jpg?v=1619597297120" />
@@ -968,30 +864,30 @@
         <img id="fünf--4"
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_4.jpg?v=1624192513145" />
         <img id="fünf--5"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_5.jpg?v=1624192513558" />
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Ffu%CC%88nf_5.jpg?v=1624192513558" /> -->
 
-        <a-asset-item id="area3" response-type="arraybuffer"
-          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
-        </a-asset-item>
+      <a-asset-item id="area3" response-type="arraybuffer"
+        src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FTCB_Textures.glb?v=1622546313299">
+      </a-asset-item>
 
 
 
-        <!-- <video
+      <!-- <video
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2FWE-Header-Animation.mp4?v=1624955890694"
           preload="auto" id="vid" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
           playsinline>
         </video> -->
 
 
-        <!-- <video
+      <!-- <video
           src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fproduction%20ID_5183199.mp4?v=1625124596008"
           preload="auto" id="vid" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay muted
           playsinline>
         </video> -->
-      </a-assets>
+    </a-assets>
 
 
-      <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" id="vier__marker"
+    <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" id="vier__marker"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
           <a-entity class="clickable"
@@ -1001,7 +897,7 @@
       </a-nft> -->
 
 
-      <a-nft type="nft"
+    <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/005/005"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="fünf__marker">
@@ -1010,9 +906,9 @@
             image-slider-activate="markerId: fünf__marker; slides: slides5; images: [{img: '#fünf__1, width: 120, height: 80, headline: 'lobby'}, {img: '#fünf__2, width: 120, height: 80, headline: 'lobby2'}, {img: '#fünf__3, width: 80, height: 120, headline: 'lobby3'},  {img: '#fünf__4, width: 80, height: 120, headline: 'lobby4'},  {img: '#fünf__5, width: 80, height: 120, headline: 'lobby5'}]">
           </a-entity>
         </a-entity>
-      </a-nft>
+      </a-nft> -->
 
-      <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" smooth="true"
+    <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" smooth="true"
         id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
         <a-entity position="50 150 -200" videohandlerFull>
 
@@ -1021,51 +917,58 @@
 
 
 
-      <!-- KAI
+    <!-- KAI
     der funktioniert  -->
-      <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
-        smooth="true" id="vidMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-        <a-entity position="50 150 -200" videohandler>
+    <a-nft type="nft"
+      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
+      smooth="true" id="vidMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+      <a-entity position="50 150 -200" videohandler>
 
-        </a-entity>
-      </a-nft>
-      <!-- KAI
+      </a-entity>
+    </a-nft>
+    <!-- KAI
     der funktioniert nicht -->
-      <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
-        smooth="true" id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-        <a-entity position="50 150 -200" videofullhandler>
+    <a-nft type="nft"
+      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
+      smooth="true" id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+      <a-entity position="50 150 -200" videofullhandler>
 
-        </a-entity>
-      </a-nft>
-      <!-- KAI
+      </a-entity>
+    </a-nft>
+    <!-- KAI
     der funktioniert nicht -->
-      <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
-        smooth="true" id="ImageSliderMarkerMagic" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-        <a-entity position="50 150 -200" imageslidermagic>
+    <a-nft type="nft"
+      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
+      smooth="true" id="videoDoneMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+      <a-entity position="50 150 -200" videodonebutton>
 
-        </a-entity>
-      </a-nft>
+      </a-entity>
+    </a-nft>
+    <a-nft type="nft"
+      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
+      smooth="true" id="previousNextMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+      <a-entity position="50 150 -200" previousnext>
 
-      <a-nft type="nft"
-        url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kala/kala"
-        smooth="true" smoothCount="20" smoothTolerance=".01" smoothThreshold="10" raycaster="objects: .clickable"
-        emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="modelmarker">
+      </a-entity>
+    </a-nft>
 
-        <!-- 
+    <a-nft type="nft"
+      url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/kala/kala"
+      smooth="true" smoothCount="20" smoothTolerance=".01" smoothThreshold="10" raycaster="objects: .clickable"
+      emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="modelmarker">
+
+      <!-- 
         <a-entity light="type: directional; color: #FFF; intensity: 10" position="-0.5 1 1"></a-entity> -->
 
-        <a-entity position="50 150 -200" objectmodel-detected>
-        </a-entity>
+      <a-entity position="50 150 -200" objectmodel-detected>
+      </a-entity>
 
 
-      </a-nft>
+    </a-nft>
 
 
 
-      <!-- <a-nft type="nft"
+    <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/010/image--010"
         id="yo" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
         <a-entity scale="1 1 1" position="50 150 -200" rotation="-90 0 0">
@@ -1075,7 +978,7 @@
         </a-entity>
       </a-nft> -->
 
-      <!-- 
+    <!-- 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/013/image--013"
         id="banana" emitevents="true" cursor="fuse: false; rayOrigin: mouse;">
@@ -1087,7 +990,7 @@
         </a-entity>
       </a-nft> -->
 
-      <a-nft type="nft"
+    <!-- <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/018/image--018"
         smooth="true" smoothcount="10" smoothtolerance=".01" smooththreshold="5" raycaster="objects: .clickable"
         emitevents="true" cursor="fuse: false; rayOrigin: mouse;" id="achtzehn__marker">
@@ -1097,10 +1000,10 @@
             image-slider-activate="markerId: achtzehn__marker; slides: slides8; images: [{img: '#achtzehn__1, width: 120, height: 80, headline: 'kantine1'}, {img: '#achtzehn__2, width: 120, height: 80, headline: 'kantine2'}, {img: '#achtzehn__3, width: 120, height: 80, headline: 'kantine3'},  {img: '#achtzehn__4, width: 80, height: 120, headline: 'kantine4'},  {img: '#achtzehn__5, width: 120, height: 80, headline: 'kantine5'}, {img: '#achtzehn__6, width: 120, height: 80, headline: 'kantine6'}]">
           </a-entity>
         </a-entity>
-      </a-nft>
+      </a-nft> -->
 
 
-      <!-- 
+    <!-- 
       <a-nft type="nft"
         url="https://arjs-cors-proxy.herokuapp.com/https://rawcdn.githack.com/PetabitMan/TC-flyer/master/tracker/023/image--023"
         smooth="true" smoothcount="5" smoothtolerance=".01" smooththreshold="10" raycaster="objects: .clickable"
@@ -1109,33 +1012,129 @@
       </a-nft> -->
 
 
-      <a-entity camera>
-        <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
-          geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
+    <a-entity camera>
+      <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1"
+        geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.008" material="color: grey; shader: flat">
+      </a-entity>
+
+      <!-- 30 57 20 -->
+      <a-entity position="0 0 0" rotation="0 0 20">
+        <a-entity gesture-handler="minScale:0.7; maxScale:1.5; name:model" class="clickable" visible="false" id="area"
+          position="0 0 -1" rotation="30 57 0" gltf-model="#area3" scale="2 2 2">
         </a-entity>
+        <a-plane gesture-handler="minScale:0.7; maxScale:1.5; name:plane;" class="clickable" width="0.5" height="0.5"
+          opacity="0.9" position="0 0 -1" id="plane" rotation="-60 57 0" color="white" visible="false">
 
-        <!-- 30 57 20 -->
-        <a-entity position="0 0 0" rotation="0 0 20">
-          <a-entity gesture-handler="minScale:0.7; maxScale:1.5; name:model" class="clickable" visible="false" id="area"
-            position="0 0 -1" rotation="30 57 0" gltf-model="#area3" scale="2 2 2">
-          </a-entity>
-          <a-plane gesture-handler="minScale:0.7; maxScale:1.5; name:plane;" class="clickable" width="0.5" height="0.5"
-            opacity="0.9" position="0 0 -1" id="plane" rotation="-60 57 0" color="white" visible="false">
-
-          </a-plane>
-        </a-entity>
+        </a-plane>
+      </a-entity>
 
 
 
-        <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider">
-        </a-image>
+      <a-image position="0 0 -1" width="0.00000012" height="0.00000006" src="#my-image" id="image-slider">
+      </a-image>
 
 
-    </a-scene>
+  </a-scene>
   </div>
   <script>
 
-    const next__button = document.getElementById("btn__nextimage");
+    const doneButton = document.getElementById("doneButton");
+    doneButton.addEventListener("click", () => {
+      let vidFull = document.getElementById("videoDone");
+      vidFull.classList.add("hidden")
+      document.querySelector("#videoDone").classList.add("hidden")
+      document.getElementById("doneButton").classList.add("hidden")
+      vidFull.pause();
+      vidFull.currentTime = 0;
+    })
+
+
+  </script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- /* .buttons {
+  z-index: 10;
+  border-left-width: 15px;
+  border-right-width: 15px;
+  border-bottom-width: 40px;
+  border-top-width: 15px;
+  border-color: white;
+  border-style: solid;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+  bottom: 5.5%;
+  left: 2.05%;
+  pointer-events: none;
+}
+
+
+.say-hi-button {
+  padding: 0.25em;
+  border-radius: 4px;
+  border: none;
+  background: none;
+  color: black;
+  width: 50px;
+  height: 30px;
+  position: relative;
+  top: 35px;
+  pointer-events: all;
+}
+
+.say-bye-button {
+  padding: 0.25em;
+  border-radius: 4px;
+  border: none;
+  background: none;
+  color: black;
+  width: 50px;
+  height: 30px;
+  position: relative;
+  top: 35px;
+  pointer-events: all;
+} -->
+
+<!-- const next__button = document.getElementById("btn__nextimage");
     const back__button = document.getElementById("btn__lastimage");
     const slider = document.getElementById("image-slider");
 
@@ -1165,9 +1164,133 @@
       } else {
         slider.setAttribute("src", slides[(slideindex -= 1)]);
       }
-    });
-  </script>
+    }); -->
 
-</body>
 
-</html>
+
+
+<!-- var slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
+    const slides2 = ["#dreizehn--1", "#dreizehn--2", "#dreizehn--3", "#dreizehn--4", "#dreizehn--5"]
+    const slides8 = ["#achtzehn--1", "#achtzehn--2", "#achtzehn--3", "#achtzehn--4", "#achtzehn--5", "#achtzehn--6"]
+    const slides5 = ['#fünf--1', '#fünf--2', '#fünf--3', '#fünf--4', '#fünf--5']
+    const slides3 = ["#zehn--1", "#zehn--2", "#zehn--3", "#zehn--4", "#zehn--5"]
+    const slides4 = ["#vier--1", "#vier--2", "#vier--3", "#vier--4"] -->
+
+
+<!-- AFRAME.registerComponent("image-slider-activate", {
+schema: {
+enabled: { default: true },
+images: {
+default: [{ img: '#my-image5', width: 120, height: 80, headline: 'peace' }, { img: '#my-image3', width: 120, height: 80,
+headline: 'was geht' }]
+},
+slides: {
+default: "slides2"
+},
+markerId: { default: "yo" }
+},
+
+init: function () {
+
+this.index = 0;
+this.isVisible = false;
+let dataSlides = this.data.slides;
+
+let images = this.data.images;
+slider.setAttribute("src", slides[0])
+let img__index = slides.indexOf(slider.getAttribute("src"));
+let markerId = this.data.markerId;
+let widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11)) ?? 120
+
+let camera = document.querySelector("[camera]");
+let heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12)) ?? 100
+
+let buttons = document.getElementById("buttons");
+let element = document.getElementById("image-slider");
+let marker = document.getElementById(markerId);
+let img__text = document.getElementById("img__text")
+
+
+
+
+
+const click__event = new MouseEvent("click", { view: window, bubbles: true, cancelable: true });
+
+marker.addEventListener("markerFound", e => {
+
+this.isVisible = true;
+
+buttons.classList.remove("hidden");
+// inc__button.dispatchEvent(click__event)
+let cameraPosition = camera.object3D.position;
+let markerPosition = marker.object3D.position;
+document.querySelector("head").appendChild(disableZoom)
+switch (dataSlides) {
+case "slides2":
+slides = slides2
+break;
+case "slides3":
+slides = slides3
+break;
+case "slides8":
+slides = slides8
+break;
+case "slides5":
+slides = slides5
+break;
+case "slides4":
+slides = slides4
+break;
+default:
+slides = ["#my-image", "#my-image2", "#my-image3", "#my-image4", "#my-image5"];
+break;
+}
+next__button.dispatchEvent(click__event);
+
+setInterval(() => {
+
+
+if (this.isVisible) {
+let distance = cameraPosition.distanceTo(markerPosition);
+element.setAttribute('visible', true);
+img__index = slides.indexOf(slider.getAttribute("src"));
+img__text.innerHTML = images[img__index * 4 + 3].toString().substring(9, 25).replace("}", "").replace("]",
+"").replace("'", "").replace("'", "")
+
+widthDim = parseInt(images[img__index * 4 + 1].toString().substring(6, 11))
+heightDim = parseInt(images[img__index * 4 + 2].toString().substring(7, 12))
+let slide__height = (heightDim / distance);
+let slide__width = (widthDim / distance);
+// limit size
+if (slide__width * 895 < (window.screen.width - 30) && slide__width * 895> (window.screen.width / 2.5)) {
+  element.setAttribute("width", slide__width.toString());
+  element.setAttribute("height", slide__height.toString());
+  buttons.style = `width: ${slide__width * 895}px; height: ${slide__height * 885}px;}`
+  }
+
+  } else {
+  // setAttribute('visible', false); might better
+
+
+  element.setAttribute('visible', false);
+
+  }
+  //maye experiment with interval number
+  //should update faster but
+  }, 20)
+
+  });
+
+  marker.addEventListener("markerLost", e => {
+  this.isVisible = false;
+
+  buttons.classList.add("hidden");
+  document.querySelector("head").removeChild(disableZoom)
+
+  element.setAttribute('visible', false);
+  });
+  },
+  tick: function (time, deltaTime) {
+
+  }
+  }); -->
