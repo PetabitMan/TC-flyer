@@ -32,12 +32,12 @@ if (process.env.NODE_ENV === "production") {
   // httpsServer.listen(8443, '192.168.0.229');
 
   //my phone hotspot
-  // httpServer.listen(8080, '172.20.10.2');
-  // httpsServer.listen(8443, '172.20.10.2');
+  httpServer.listen(8080, '172.20.10.2');
+  httpsServer.listen(8443, '172.20.10.2');
 
   //home hostel
-  httpServer.listen(8080, '192.168.9.37');
-  httpsServer.listen(8443, '192.168.9.37');
+  // httpServer.listen(8080, '192.168.9.37');
+  // httpsServer.listen(8443, '192.168.9.37');
 
 
 }

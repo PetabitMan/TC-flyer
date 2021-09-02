@@ -346,21 +346,18 @@
         let model = document.getElementById("area")
         let plane = document.getElementById("plane")
         let modelMarker = document.getElementById("modelmarker")
+        let objectmodelDetectedDone = document.getElementById("objectmodel-detected-done");
 
         modelMarker.addEventListener("markerFound", e => {
           this.isVisible = true;
 
           model.setAttribute('visible', true);
           plane.setAttribute('visible', true);
-
+          objectmodelDetectedDone.classList.remove("hidden")
 
         })
 
-        modelMarker.addEventListener("markerLost", e => {
-          this.isVisible = false;
-          model.setAttribute('visible', false);
-          plane.setAttribute('visible', false);
-        })
+
       },
       tick: function (time, deltaTime) {
 
@@ -368,96 +365,96 @@
     });
 
 
-    AFRAME.registerComponent('videohandler', {
-      schema: {
+    // AFRAME.registerComponent('videohandler', {
+    //   schema: {
 
-      },
-      init: function () {
+    //   },
+    //   init: function () {
 
-        let markerVid = document.querySelector("#vidMarker")
-        let camera = document.querySelector("[camera]");
-        this.isVisible = false
-        this.vid = document.querySelector("#video");
+    //     let markerVid = document.querySelector("#vidMarker")
+    //     let camera = document.querySelector("[camera]");
+    //     this.isVisible = false
+    //     this.vid = document.querySelector("#video");
 
-        markerVid.addEventListener('markerFound', function () {
-          this.isVisible = true
-          let cameraPosition = camera.object3D.position;
-          let markerPosition = markerVid.object3D.position;
-          document.querySelector("head").appendChild(disableZoom)
-          this.vid.classList.remove("hidden")
-          this.vid.play();
-          setInterval(() => {
+    //     markerVid.addEventListener('markerFound', function () {
+    //       this.isVisible = true
+    //       let cameraPosition = camera.object3D.position;
+    //       let markerPosition = markerVid.object3D.position;
+    //       document.querySelector("head").appendChild(disableZoom)
+    //       this.vid.classList.remove("hidden")
+    //       this.vid.play();
+    //       setInterval(() => {
 
-            if (this.isVisible) {
-              let distance = cameraPosition.distanceTo(markerPosition);
-
-
-
-
-
-              let vid__width = (80000 * 2 / distance);
-
-
-              Math.floor(vid__width)
-              this.vid.style.width = `${vid__width}px`
+    //         if (this.isVisible) {
+    //           let distance = cameraPosition.distanceTo(markerPosition);
 
 
 
 
-            } else {
-              // setAttribute('visible', false); might better
+
+    //           let vid__width = (80000 * 2 / distance);
 
 
-              this.vid.classList.add("hidden")
+    //           Math.floor(vid__width)
+    //           this.vid.style.width = `${vid__width}px`
 
-            }
-            //maye experiment with interval number
-            //should update faster but
-          }, 20)
-        }.bind(this));
 
-        markerVid.addEventListener('markerLost', function () {
-          this.isVisible = false
-          this.vid.classList.add("hidden")
-          this.vid.pause();
-          this.vid.currentTime = 0;
-          document.querySelector("head").removeChild(disableZoom)
-        }.bind(this));
-      }
-    });
+
+
+    //         } else {
+    //           // setAttribute('visible', false); might better
+
+
+    //           this.vid.classList.add("hidden")
+
+    //         }
+    //         //maye experiment with interval number
+    //         //should update faster but
+    //       }, 20)
+    //     }.bind(this));
+
+    //     markerVid.addEventListener('markerLost', function () {
+    //       this.isVisible = false
+    //       this.vid.classList.add("hidden")
+    //       this.vid.pause();
+    //       this.vid.currentTime = 0;
+    //       document.querySelector("head").removeChild(disableZoom)
+    //     }.bind(this));
+    //   }
+    // });
 
     //KAI
     //der funktioniert nicht
-    AFRAME.registerComponent('videofullhandler', {
-      schema: {
+    // AFRAME.registerComponent('videofullhandler', {
+    //   schema: {
 
-      },
-      init: function () {
+    //   },
+    //   init: function () {
 
-        let markerFullVid = document.querySelector("#vidFullMarker")
+    //     let markerFullVid = document.querySelector("#vidFullMarker")
 
-        this.isVisible = false
-        this.vidFull = document.querySelector("#videoFull");
+    //     this.isVisible = false
+    //     this.vidFull = document.querySelector("#videoFull");
 
-        markerFullVid.addEventListener('markerFound', function () {
+    //     markerFullVid.addEventListener('markerFound', function () {
 
-          this.isVisible = true
+    //       this.isVisible = true
 
 
-          this.vidFull.classList.remove("hidden")
-          this.vidFull.play();
+    //       this.vidFull.classList.remove("hidden")
+    //       this.vidFull.play();
 
-        }.bind(this));
+    //     }.bind(this));
 
-        markerFullVid.addEventListener('markerLost', function () {
-          this.isVisible = false
-          this.vidFull.classList.add("hidden")
-          this.vidFull.pause();
-          this.vidFull.currentTime = 0;
+    //     markerFullVid.addEventListener('markerLost', function () {
+    //       this.isVisible = false
+    //       this.vidFull.classList.add("hidden")
+    //       this.vidFull.pause();
+    //       this.vidFull.currentTime = 0;
 
-        }.bind(this));
-      }
-    });
+    //     }.bind(this));
+    //   }
+    // });
     // AFRAME.registerComponent('previousnext', {
     //   schema: {
 
@@ -467,7 +464,7 @@
     //     let markerPreviousNext = document.querySelector("#previousNextMarker")
 
     //     this.isVisible = false
-    //     this.sliderPreviousNext = document.querySelector("#sliderPreviousNext");
+    //     this.sliderPreviousNext = document.querySelector("#previousNextSlider");
 
     //     markerPreviousNext.addEventListener('markerFound', function () {
 
@@ -510,13 +507,7 @@
 
         }.bind(this));
 
-        markerImageSlider.addEventListener('markerLost', function () {
-          this.isVisible = false
-          this.imageSliderNice.classList.add("hidden")
 
-
-
-        }.bind(this));
       }
     })
 
@@ -621,6 +612,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
     }
 
     .video {
@@ -635,12 +627,12 @@
     }
 
     .fullVideo {
-      width: 100%;
-      border-color: black;
-      border-bottom-width: 800px;
-      border-left-width: 15px;
-      border-right-width: 15px;
-      border-top-width: 800px;
+      width: 80%;
+      border-color: white;
+      border-bottom-width: 10px;
+      border-left-width: 10px;
+      border-right-width: 10px;
+      border-top-width: 10px;
       border-style: solid;
       pointer-events: all;
       z-index: 1000;
@@ -648,9 +640,13 @@
     }
 
 
-    .hidden {
-      display: none;
-      pointer-events: none;
+    .background--black {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.8);
     }
 
     .hidden button {
@@ -685,16 +681,20 @@
 
     .doneButton {
       position: absolute;
-      left: 85%;
+      left: 90%;
       top: 5%;
       z-index: 1000;
       pointer-events: all;
-      background: white;
-      color: black;
-      border-radius: 5px;
-      padding: 10px 5px;
-      text-transform: uppercase;
+      background-color: white;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
     }
+
+
 
 
     .mySlides {
@@ -709,9 +709,9 @@
       width: 300px;
       position: relative;
       margin: auto;
-      border-left-width: 41px;
-      border-right-width: 41px;
-      border-bottom-width: 25px;
+      border-left-width: 11px;
+      border-right-width: 11px;
+      border-bottom-width: 10px;
       border-top-width: 10px;
       border-style: solid;
       border-color: white;
@@ -722,9 +722,10 @@
     .next {
       cursor: pointer;
       position: absolute;
-      top: 50%;
+      top: 120px;
+      background-color: white;
       width: auto;
-      padding: 16px;
+      padding: 8px;
       margin-top: -22px;
       color: black;
       font-weight: bold;
@@ -737,12 +738,12 @@
     }
 
     .prev {
-      left: -41px;
+      left: -11px;
     }
 
     /* Position the "next button" to the right */
     .next {
-      right: -41px;
+      right: -11px;
       border-radius: 3px 0 0 3px;
     }
 
@@ -758,20 +759,14 @@
       color: black;
       font-size: 15px;
       padding: 8px 12px;
-      position: absolute;
-      bottom: -28px;
+      background-color: white;
       width: 100%;
+      position: relative;
+      right: 12px;
       text-align: center;
     }
 
-    /* Number text (1/3 etc) */
-    .numbertext {
-      color: #ffffff;
-      font-size: 12px;
-      padding: 8px 12px;
-      position: absolute;
-      top: 0;
-    }
+
 
     /* The dots/bullets/indicators */
 
@@ -813,12 +808,10 @@
       }
     }
 
-    /* 
-    Maybe overlaying scenes like that
-    a-scene {
-      width: 100%;
-      height: 90%;
-    } */
+    .hidden {
+      display: none;
+      pointer-events: none;
+    }
   </style>
 </head>
 
@@ -833,25 +826,73 @@
       </div>
     </div>
     <div class="center">
-
-
-      <video src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2F1050658927-preview.mp4?v=1629187575735"
-        preload="auto" id="videoDone" response-type="arraybuffer" loop crossorigin webkit-playsinline
-        autoplay="autoplay" muted playsinline class="fullVideo hidden">
-      </video>
-      <div class="doneButton hidden" id="doneButton">
-        <p>DONE</p>
+      <div class="hidden background--black" id="objectmodel-detected-done">
+        <div class="doneButton " id="doneButtonObjectModel">
+          <svg xmlns="http://www.w3.org/2000/svg" height="10pt" viewBox="0 0 329.26933 329" width="10pt">
+            <path
+              d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0" />
+          </svg>
+        </div>
       </div>
     </div>
-
     <div class="center">
-      <div class="hidden" id="imageSliderNice">
+
+      <div id="videoDone" class="hidden background--black">
+        <video
+          src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2F1050658927-preview.mp4?v=1629187575735"
+          preload="auto" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay="autoplay" muted
+          playsinline class="fullVideo">
+        </video>
+        <div class="doneButton " id="doneButton">
+          <svg xmlns="http://www.w3.org/2000/svg" height="10pt" viewBox="0 0 329.26933 329" width="10pt">
+            <path
+              d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0" />
+          </svg>
+        </div>
+      </div>
+
+    </div>
+    <!-- <div class="center">
+      <div class="hidden" id="previousNextSlider">
+
+        <div class="wrapper">
+          <div class="before">
+            <img class="content-image" src="https://farm2.staticflickr.com/1638/26145024230_06acd55d1b_b.jpg"
+              draggable="false" />
+          </div>
+          <div class="after">
+            <img class="content-image" src="https://farm2.staticflickr.com/1663/25814974803_d4c55ff708_b.jpg"
+              draggable="false" />
+          </div>
+          <div class="scroller">
+            <svg class="scroller__thumb" xmlns="http://www.w3.org/2000/svg" width="100" height="100"
+              viewBox="0 0 100 100">
+              <polygon points="0 50 37 68 37 32 0 50" style="fill:#fff" />
+              <polygon points="100 50 64 32 64 68 100 50" style="fill:#fff" />
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </div> -->
+    <div class="center">
+
+      <div class="hidden background--black" id="imageSliderNice">
+
+        <div class="doneButton " id="doneButtonImageSlider">
+          <svg xmlns="http://www.w3.org/2000/svg" height="10pt" viewBox="0 0 329.26933 329" width="10pt">
+            <path
+              d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0" />
+          </svg>
+        </div>
         <div class="slideshow-container">
           <div class="mySlides fade">
 
             <img src="https://cdn.glitch.com/280b4493-9a96-4882-ace7-2c7060cc4d01%2Fzehn_5.jpg?v=1624191905402"
               style="width:100%">
-            <div class="text">Slide 1</div>
+            <div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad ex molestiae saepe vel sed?
+              Eligendi voluptate provident quo ea, fugit earum rem commodi. Illo voluptatum eligendi saepe, quisquam
+              excepturi blanditiis! </div>
           </div>
           <div class="mySlides fade">
 
@@ -865,12 +906,26 @@
               style="width:100%">
             <div class="text">Slide 3</div>
           </div>
-          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-          <a class="next" onclick="plusSlides(1)">&#10095;</a>
+          <a class="prev" onclick="plusSlides(-1)"><svg xmlns="http://www.w3.org/2000/svg" width="7.629" height="12"
+              viewBox="0 0 7.629 12">
+              <path id="angle-left"
+                d="M7.048,12.017a.758.758,0,0,0,.519-.236.688.688,0,0,0-.094-.991L1.9,6.022,7.52,1.254A.732.732,0,0,0,7.614.262.732.732,0,0,0,6.623.168L.391,5.455a.655.655,0,0,0-.189.8.84.84,0,0,0,.33.378l6.137,5.24c.047.094.189.142.378.142Z"
+                transform="translate(-0.136 -0.017)" />
+            </svg>
+          </a>
+          <a class="next" onclick="plusSlides(1)"><svg xmlns="http://www.w3.org/2000/svg" width="7.629" height="12"
+              viewBox="0 0 7.629 12">
+              <path id="angle-right"
+                d="M.674,12.017a.758.758,0,0,1-.519-.236.688.688,0,0,1,.094-.991L5.82,6.022.2,1.254A.732.732,0,0,1,.108.262.732.732,0,0,1,1.1.168L7.331,5.455a.655.655,0,0,1,.189.8.84.84,0,0,1-.33.378l-6.137,5.24c-.047.094-.189.142-.378.142Z"
+                transform="translate(0.043 -0.017)" />
+            </svg>
+          </a>
         </div>
 
 
       </div>
+
+
     </div>
     <div class="center">
 
@@ -948,10 +1003,10 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
           </a-entity>
         </a-entity>
       </a-nft> -->
-
-      <!-- <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" smooth="true"
-        id="vidFullMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
-        <a-entity position="50 150 -200" >
+      <!-- 
+      <a-nft type="nft" url="https://transfer.short-cuts.cloud/paular/tracker/vier/vier" smooth="true"
+        id="previousNextMarker" smoothcount="10" smoothtolerance="0.01" smooththreshold="5">
+        <a-entity position="50 150 -200" previousnext>
 
         </a-entity>
       </a-nft> -->
@@ -1089,7 +1144,22 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
       vidFull.pause();
       vidFull.currentTime = 0;
     })
+    const doneButtonImageSlider = document.getElementById("doneButtonImageSlider");
+    doneButtonImageSlider.addEventListener("click", () => {
+      let imageSLiderDone = document.getElementById("imageSliderNice");
+      imageSLiderDone.classList.add("hidden")
 
+    })
+    const doneButtonObjectModel = document.getElementById("doneButtonObjectModel");
+    doneButtonObjectModel.addEventListener("click", () => {
+      let objectmodelDetectedDone = document.getElementById("objectmodel-detected-done");
+      objectmodelDetectedDone.classList.add("hidden")
+      let modelObject = document.getElementById("area")
+      let planeObject = document.getElementById("plane")
+      modelObject.setAttribute('visible', false);
+      planeObject.setAttribute('visible', false);
+
+    })
 
   </script>
 
@@ -1120,6 +1190,50 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
     }
   </script>
 
+  <!-- <script>
+    // I hope this over-commenting helps. Let's do this!
+    // Let's use the 'active' variable to let us know when we're using it
+    let active = false;
+
+
+    // Let's figure out where their mouse is at
+    document.querySelector("previousNextSlider").addEventListener('touchmove', function (e) {
+      if (!active) return;
+      // Their mouse is here...
+      let x = e.pageX;
+      // but we want it relative to our wrapper
+      x -= document.querySelector('.wrapper').getBoundingClientRect().left;
+      // Okay let's change our state
+      scrollIt(x);
+    });
+
+    // Let's use this function
+    function scrollIt(x) {
+      window.alert("hi")
+      let transform = Math.max(0, (Math.min(x, document.querySelector('.wrapper').offsetWidth)));
+      document.querySelector('.after').style.width = transform + "px";
+      document.querySelector('.scroller').style.left = transform - 25 + "px";
+    }
+
+    // Let's set our opening state based off the width, 
+    // we want to show a bit of both images so the user can see what's going on
+    scrollIt(30);
+
+    // And finally let's repeat the process for touch events
+    // first our middle scroller...
+    document.querySelector('.scroller').addEventListener('touchstart', function () {
+      active = true;
+      document.querySelector('.scroller').classList.add('scrolling');
+    });
+    document.querySelector("previousNextSlider").addEventListener('touchend', function () {
+      active = false;
+      document.querySelector('.scroller').classList.remove('scrolling');
+    });
+    document.querySelector("previousNextSlider").addEventListener('touchcancel', function () {
+      active = false;
+      document.querySelector('.scroller').classList.remove('scrolling');
+    });
+  </script> -->
 </body>
 
 </html>
@@ -1141,6 +1255,105 @@ L0.4,13.8l0,0c0-0.1-0.1-0.1-0.1-0.2l0,0C0.1,13.4,0,13,0,12.7C0,12.4,0.1,12.1,0.4
 
 
 
+<!-- /* Our wrapper */
+.wrapper {
+  width: 300px;
+  height: 200px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  pointer-events: all;
+  z-index: 1000;
+}
+
+/* Our image information */
+.before,
+.after {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.content-image {
+  height: 100%;
+}
+
+.after {
+  width: 125px;
+}
+
+.scroller {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 100px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background-color: transparent;
+  opacity: 0.9;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.scroller:hover {
+  opacity: 1;
+}
+
+.scrolling {
+  pointer-events: all;
+  opacity: 1;
+
+}
+
+.scroller__thumb {
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+}
+
+.scroller:before,
+.scroller:after {
+  content: " ";
+  display: block;
+  width: 7px;
+  height: 9999px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3.5px;
+  z-index: 1030;
+  transition: 0.1s;
+}
+
+.scroller:before {
+  top: 100%;
+}
+
+.scroller:after {
+  bottom: 100%;
+}
+
+/* If you want to cahnge the colors, make sure you change the fill in the svgs to match */
+.scroller {
+  border: 5px solid #fff;
+}
+
+.scroller:before,
+.scroller:after {
+  background: #fff;
+}
+ -->
 
 
 
